@@ -14,12 +14,27 @@ import { RouterLink, RouterView } from 'vue-router'
     <router-link to="/replacer" class="py-2 px-3 hover:bg-neutral-700 inline-block">Setup replacer</router-link>
     
   </div>
-
-  <RouterView />
+  
+  <RouterView v-slot="{ Component }">
+    <Transition mode="out-in">
+      <component :is="Component"/>
+    </Transition>
+  </RouterView>
+  
 </template>
 
 <style>
 @import '@/assets/base.css';
+
+.v-enter-active,
+.v-leave-active {
+transition: opacity 0.1s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+opacity: 0;
+}
 
 #app {
   padding: 2rem;
@@ -31,52 +46,4 @@ import { RouterLink, RouterView } from 'vue-router'
   @apply bg-neutral-700
 }
 
-/* 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-} */
 </style>

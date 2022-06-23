@@ -3,5 +3,5 @@
 </script>
 
 <template>
-    replacer view
+    <div>wip</div>
 </template>
