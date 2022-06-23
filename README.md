@@ -1,6 +1,9 @@
 # RBR Tools
 
-Web app that that contains various tools for Richard Burns Rally simulator
+Web app that that contains various tools for Richard Burns Rally simulator.
+
+Currently it contains:
+- setup extractor
 
 [Visit web version](http://rbr-tools.vercel.app), or read instructions below how to serve your own instance.
 
