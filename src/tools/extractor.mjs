@@ -6,7 +6,7 @@ export async function extractSetup(file){
     let setupArray = []
 
     const byteBuffer = await file.arrayBuffer();
-    const fileExtension = file.name.split('.')[1]
+    const fileExtension = file.name.split('.').slice(-1)[0];
 
     if(fileExtension != 'rpl'){
         extractMessage = 'Failed. Only .rpl files are supported.'

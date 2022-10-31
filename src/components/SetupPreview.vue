@@ -13,7 +13,7 @@
     })
 
     function saveToDisk(){
-        const fileName = props.file.name.split('.')[0]
+        const fileName = props.file.name.substring(0, props.file.name.lastIndexOf('.')) || props.file.name;
         var blob = new Blob([extractResult.data], {type: "example/binary"});
         saveAs(blob, `${fileName}.lsp`);
     }
