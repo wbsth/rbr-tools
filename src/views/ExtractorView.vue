@@ -25,7 +25,7 @@
             
         </div>
 
-        <SetupPreview class="mt-12" v-if="fileData.file != null" :file="fileData.file"/>
+        <SetupPreview v-if="fileData.file != null" :file="fileData.file"/>
 
     </div>
 </template>

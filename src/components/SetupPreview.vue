@@ -18,17 +18,17 @@
         saveAs(blob, `${fileName}.lsp`);
     }
 
-    async function handleExtractForNewFile(){
-        let tempRes = await extractSetup(props.file);
+    async function handleExtractForNewFile(file){
+        let tempRes = await extractSetup(file);
         Object.assign(extractResult, tempRes);
     }
 
-    onMounted(async () => {
-        await handleExtractForNewFile();
-    });
-
-    watch(()=>props.file, async()=>{
-        await handleExtractForNewFile();
+    watch(()=>props.file, 
+        async(file)=>{
+            await handleExtractForNewFile(file);
+        }, 
+        {
+        immediate: true
     });
 
 </script>
