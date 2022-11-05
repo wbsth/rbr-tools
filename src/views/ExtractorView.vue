@@ -6,12 +6,6 @@ import SetupPreview from "../components/SetupPreview.vue";
 const fileData = reactive({ file: null });
 
 async function LoadNewReplayFile(){
-  if (supported) {
-    console.log('Using the File System Access API.');
-  } else {
-    console.log('Using the fallback implementation.');
-  }
-
   const file = await fileOpen({
     description: "RBR Replay File",
     extensions: ['.rpl']

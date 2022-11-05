@@ -122,6 +122,5 @@ function Replace(replayByteArray, replayIntegers, setupIntegers, setupIndexes)
         }
 
     }
-    console.log(replayByteArray);
     return replayByteArray;
 }

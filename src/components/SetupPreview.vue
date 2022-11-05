@@ -18,7 +18,7 @@ async function saveToDisk() {
     props.file.name.substring(0, props.file.name.lastIndexOf(".")) ||
     props.file.name;
   var blob = new Blob([extractResult.data], { type: "example/binary" });
-  //saveAs(blob, `${fileName}.lsp`);
+
   await fileSave(blob, {
     fileName: fileName,
     extensions: ['.lsp'],

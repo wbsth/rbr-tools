@@ -1,25 +1,26 @@
 <script setup>
-import { reactive, watch } from "vue";
+import { reactive } from "vue";
 import SetupReplacer from "../components/SetupReplacer.vue";
+import { fileOpen } from "browser-fs-access";
 
 const fileData = reactive({ setupFile: null, replayFile: null });
 
-function setupFileWasChanged(event) {
-  fileData.setupFile = event.srcElement.files[0];
+async function loadSetupFile() {
+  const file = await fileOpen({
+    description: "RBR Setup File",
+    extensions: ['.lsp']
+  });
+  fileData.setupFile = file;
 }
 
-function replayFileWasChanged(event) {
-  fileData.replayFile = event.srcElement.files[0];
+async function loadReplayFile() {
+  const file = await fileOpen({
+    description: "RBR Replay File",
+    extensions: ['.rpl']
+  });
+  fileData.replayFile = file;
 }
 
-// watch(() => fileData.setupFile, async () => await handleSetupReplacement());
-// watch(() => fileData.replayFile, async () => await handleSetupReplacement());
-
-// async function handleSetupReplacement(){
-//     if(fileData.replayFile != null && fileData.setupFile != null){
-//         console.log("testy");
-//     }
-// }
 </script>
 
 <template>
@@ -35,19 +36,9 @@ function replayFileWasChanged(event) {
     </p>
 
     <div class="flex flex-row content-center gap-3 py-3">
-      <div>
-        <input
-          id="replayFileUpload"
-          type="file"
-          style="display: none"
-          @change="replayFileWasChanged"
-        />
-        <label
-          for="replayFileUpload"
-          class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block w-40 text-center"
-          >Choose replay file</label
-        >
-      </div>
+      <button class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block w-40 text-center" @click="loadReplayFile">
+        <p>Choose replay file</p>
+      </button>
 
       <div class="flex justify-center items-center italic">
         {{
@@ -59,19 +50,9 @@ function replayFileWasChanged(event) {
     </div>
 
     <div class="flex flex-row content-center gap-3 pb-3">
-      <div>
-        <input
-          id="setupFileUpload"
-          type="file"
-          style="display: none"
-          @change="setupFileWasChanged"
-        />
-        <label
-          for="setupFileUpload"
-          class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block w-40 text-center"
-          >Choose setup file</label
-        >
-      </div>
+      <button class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block w-40 text-center" @click="loadSetupFile">
+        <p>Choose setup file</p>
+      </button>
 
       <div class="flex justify-center items-center italic">
         {{
