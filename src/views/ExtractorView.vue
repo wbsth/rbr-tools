@@ -1,12 +1,24 @@
 <script setup>
 import { reactive } from "vue";
+import { fileOpen, supported } from "browser-fs-access";
 import SetupPreview from "../components/SetupPreview.vue";
 
 const fileData = reactive({ file: null });
 
-function inputFileWasChanged(event) {
-  fileData.file = event.srcElement.files[0];
+async function LoadNewReplayFile(){
+  if (supported) {
+    console.log('Using the File System Access API.');
+  } else {
+    console.log('Using the fallback implementation.');
+  }
+
+  const file = await fileOpen({
+    description: "RBR Replay File",
+    extensions: ['.rpl']
+  });
+  fileData.file = file;     
 }
+
 </script>
 
 <template>
@@ -22,19 +34,9 @@ function inputFileWasChanged(event) {
     </p>
 
     <div class="flex flex-row content-center py-3 gap-3">
-      <div>
-        <input
-          id="fileupload"
-          type="file"
-          style="display: none"
-          @change="inputFileWasChanged"
-        />
-        <label
-          for="fileupload"
-          class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block"
-          >Choose replay file</label
-        >
-      </div>
+      <button class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block" @click="LoadNewReplayFile">
+        <p>Choose replay file</p>
+      </button>
 
       <div class="flex justify-center items-center italic">
         {{ fileData.file == null ? "no file chosen..." : fileData.file.name }}

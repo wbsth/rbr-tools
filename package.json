@@ -9,7 +9,7 @@
     "format": "prettier .  --write"
   },
   "dependencies": {
-    "file-saver": "^2.0.5",
+    "browser-fs-access": "^0.31.1",
     "vue": "^3.2.37",
     "vue-router": "^4.0.16"
   },

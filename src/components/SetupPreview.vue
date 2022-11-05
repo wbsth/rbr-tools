@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, watch, computed } from "vue";
 import { extractSetup } from "../tools/extractor.mjs";
-import { saveAs } from "file-saver";
+import { fileSave } from "browser-fs-access";
 
 const props = defineProps({
   file: File,
@@ -13,12 +13,17 @@ const canShowDownloadButton = computed(() => {
   return extractResult.message != null ? !extractResult.failed : false;
 });
 
-function saveToDisk() {
+async function saveToDisk() {
   const fileName =
     props.file.name.substring(0, props.file.name.lastIndexOf(".")) ||
     props.file.name;
   var blob = new Blob([extractResult.data], { type: "example/binary" });
-  saveAs(blob, `${fileName}.lsp`);
+  //saveAs(blob, `${fileName}.lsp`);
+  await fileSave(blob, {
+    fileName: fileName,
+    extensions: ['.lsp'],
+    description: "RBR Setup File"
+  });
 }
 
 async function handleExtractForNewFile(file) {
