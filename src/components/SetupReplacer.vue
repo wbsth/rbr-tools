@@ -11,13 +11,11 @@ const props = defineProps({
 const replaceResult = reactive({});
 
 async function replace() {
-  console.log(replaceResult.failed == null);
   let res = await replaceSetup(props.replayFile, props.setupFile);
   Object.assign(replaceResult, res); 
 }
 
 async function saveToDisk() {
-  console.log(props.replayFile.name);
   const fileName =
     props.replayFile.name.substring(0, props.replayFile.name.lastIndexOf(".")) ||
     props.replayFile.name;
