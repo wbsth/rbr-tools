@@ -25,7 +25,7 @@ export function findSetupIndex(byteArray) {
     }
 
     if (isArrayEqual(endBytes, currentEnd)) {
-      endIndex = index + 5;
+      endIndex = index + 4;
       break;
     }
   }
