@@ -9,9 +9,14 @@
     "format": "prettier .  --write"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.2.1",
+    "@fortawesome/free-regular-svg-icons": "^6.2.1",
+    "@fortawesome/free-solid-svg-icons": "^6.2.1",
+    "@fortawesome/vue-fontawesome": "^3.0.2",
     "browser-fs-access": "^0.31.1",
     "vue": "^3.2.37",
-    "vue-router": "^4.0.16"
+    "vue-router": "^4.0.16",
+    "vue3-drr-grid-layout": "^1.9.6"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
