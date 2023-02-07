@@ -1,8 +1,6 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import { Splitpanes, Pane } from 'splitpanes'
-import 'splitpanes/dist/splitpanes.css'
 import "./main.css";
 
 
@@ -19,7 +17,5 @@ const app = createApp(App);
 app.use(router);
 
 app.component("font-awesome-icon", FontAwesomeIcon)
-   .component("Splitpanes", Splitpanes)
-   .component("Pane", Pane)
 
 app.mount("#app");

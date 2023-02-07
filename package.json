@@ -14,8 +14,11 @@
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@fortawesome/vue-fontawesome": "^3.0.2",
     "browser-fs-access": "^0.31.1",
-    "splitpanes": "^3.1.5",
+    "chart.js": "^4.2.0",
+    "gridstack": "^7.2.3",
+    "papaparse": "^5.3.2",
     "vue": "^3.2.37",
+    "vue-chartjs": "^5.2.0",
     "vue-router": "^4.0.16"
   },
   "devDependencies": {
