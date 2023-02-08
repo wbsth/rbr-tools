@@ -17,26 +17,26 @@ const telemetryFile = reactive({ file: null });
 
 // default widgets
 const widgets = ref([
-  {
-    id: 1,
-    title: "First Widget",
-    grid: {
-      x: 0,
-      y: 0,
-      w: 1,
-      h: 6,
-    },
-  },
-  {
-    id: 2,
-    title: "Second Widget",
-    grid: {
-      x: 0,
-      y: 0,
-      w: 1,
-      h: 6,
-    },
-  },
+  // {
+  //   id: 1,
+  //   title: "First Widget",
+  //   grid: {
+  //     x: 0,
+  //     y: 0,
+  //     w: 1,
+  //     h: 6,
+  //   },
+  // },
+  // {
+  //   id: 2,
+  //   title: "Second Widget",
+  //   grid: {
+  //     x: 0,
+  //     y: 0,
+  //     w: 1,
+  //     h: 6,
+  //   },
+  // },
 ]);
 
 // widgets grid
@@ -75,22 +75,14 @@ function deleteWidget(widget) {
 }
 
 const chartData = reactive({
-    labels: [ 'January', 'February', 'March' ],
     datasets: [{ 
-        data: [{
-      x: -10,
-      y: 0
-    }, {
-      x: 0,
-      y: 10
-    }, {
-      x: 10,
-      y: 5
-    }, {
-      x: 0.5,
-      y: 5.5
-    }],
-    showLine: false
+        data: [
+
+        ],
+        radius:0,
+        showLine: true,
+        borderWidth: 1,
+        borderColor: '#FFA07A'
     }]
 })
 

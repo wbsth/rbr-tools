@@ -8,32 +8,25 @@ ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale,
 const props = defineProps({
     chartData:{
         type: Object,
-        default: ()=>{}
+        default: ()=>{},
+        required:true
     }
 });
 
 const chartOptions = reactive({
-    responsive: true
-})
-
-const chartData = reactive({
-    labels: [ 'January', 'February', 'March' ],
-    datasets: [{ 
-        data: [{
-      x: -10,
-      y: 0
-    }, {
-      x: 0,
-      y: 10
-    }, {
-      x: 10,
-      y: 5
-    }, {
-      x: 0.5,
-      y: 5.5
-    }],
-    showLine: true
-    }]
+    responsive: true,
+    animation: false,
+    parsing: false,
+    interaction: {
+      mode: 'nearest',
+      axis: 'x',
+      intersect: false
+    },
+    plugins:{
+      tooltip:{
+        enabled: true
+      }
+    }
 })
 
 </script>
