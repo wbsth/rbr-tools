@@ -1,9 +1,10 @@
 <script setup>
 import { reactive } from 'vue';
-import { Bar } from 'vue-chartjs'
+import { Line, Scatter } from 'vue-chartjs'
+import zoomPlugin from 'chartjs-plugin-zoom';
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement } from 'chart.js'
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement)
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement, zoomPlugin)
 
 const props = defineProps({
     chartData:{
@@ -16,7 +17,8 @@ const props = defineProps({
 const chartOptions = reactive({
     responsive: true,
     animation: false,
-    parsing: false,
+    maintainAspectRatio: true,
+    parsing: true,
     interaction: {
       mode: 'nearest',
       axis: 'x',
@@ -25,6 +27,20 @@ const chartOptions = reactive({
     plugins:{
       tooltip:{
         enabled: true
+      },
+      zoom:{
+        zoom:{
+          wheel:{
+            enabled: true,
+          },
+          pinch:{
+            enabled: true
+          },
+          mode: 'xy'
+        },
+        pan:{
+          enabled: true,
+        }
       }
     }
 })
@@ -32,10 +48,9 @@ const chartOptions = reactive({
 </script>
 
 <template>
-    <Bar
+    <Scatter
       id="my-chart-id"
       :options="chartOptions"
-      :data="props.chartData"
-      type="scatter"
+      :data="chartData"            
     />
   </template>

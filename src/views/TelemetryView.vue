@@ -74,10 +74,10 @@ function deleteWidget(widget) {
   grid.value.compact();
 }
 
-const chartData = reactive({
+const chartData = ref({
     datasets: [{ 
         data: [
-
+          
         ],
         radius:0,
         showLine: true,
@@ -96,14 +96,24 @@ async function LoadNewReplayFile(){
   Papa.parse(file, {
     header: true,
     complete: function(results) {
-      console.log(results)
-		  const extractedData = results.data.map(x=>(
+
+		  let extractedData = results.data.map(x=>(
         {
           x: parseFloat(x.raceTime),
-          y: parseFloat(x["LF.temperature"])
+          y: parseFloat(x["speed"])
         }
       ));
-      Object.assign(chartData.datasets[0].data, extractedData);
+
+      let newData = {
+          datasets: [{ 
+            data: extractedData,
+            radius:0,
+            showLine: true,
+            borderWidth: 1,
+            borderColor: '#FFA07A'
+          }]
+      }
+      chartData.value = newData;
 	  }
   });
 
