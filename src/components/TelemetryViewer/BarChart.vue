@@ -43,7 +43,7 @@ const chartOptions = reactive({
         }
       }
     }
-})
+});
 
 </script>
 
@@ -53,4 +53,4 @@ const chartOptions = reactive({
       :options="chartOptions"
       :data="chartData"            
     />
-  </template>
+</template>

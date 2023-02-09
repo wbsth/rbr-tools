@@ -9,8 +9,8 @@ import Papa from 'papaparse';
 import "gridstack/dist/gridstack.min.css";
 import "gridstack/dist/gridstack-extra.min.css";
 
+import DataManager from "../components/TelemetryViewer/DataManager.vue";
 import GridItem from '../components/TelemetryViewer/GridItem.vue';
-
 import BarChart from "../components/TelemetryViewer/BarChart.vue"
 
 const telemetryFile = reactive({ file: null });
@@ -137,6 +137,8 @@ onMounted(() => {
         {{ telemetryFile.file == null ? "no file chosen..." : telemetryFile.file.name }}
       </div>
     </div>
+
+    <DataManager/>
 
     <BarChart :chart-data="chartData"/>
 
