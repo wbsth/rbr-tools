@@ -18,6 +18,7 @@
     "chartjs-plugin-zoom": "^2.0.0",
     "gridstack": "^7.2.3",
     "papaparse": "^5.3.2",
+    "pinia": "^2.0.30",
     "vue": "^3.2.37",
     "vue-chartjs": "^5.2.0",
     "vue-router": "^4.0.16"

@@ -4,7 +4,6 @@ import { fileOpen, supported } from "browser-fs-access";
 
 import { GridStack } from "gridstack";
 
-import Papa from 'papaparse';
 
 import "gridstack/dist/gridstack.min.css";
 import "gridstack/dist/gridstack-extra.min.css";
@@ -86,49 +85,17 @@ const chartData = ref({
     }]
 })
 
-async function LoadNewReplayFile(){
-  const file = await fileOpen({
-    description: "RBR Telemetry File",
-    extensions: ['.tsv']
-  });
-  telemetryFile.file = file;
-
-  Papa.parse(file, {
-    header: true,
-    complete: function(results) {
-
-		  let extractedData = results.data.map(x=>(
-        {
-          x: parseFloat(x.raceTime),
-          y: parseFloat(x["speed"])
-        }
-      ));
-
-      let newData = {
-          datasets: [{ 
-            data: extractedData,
-            radius:0,
-            showLine: true,
-            borderWidth: 1,
-            borderColor: '#FFA07A'
-          }]
-      }
-      chartData.value = newData;
-	  }
-  });
-
-}
-
 onMounted(() => {
   initGridStack();
 });
+
 </script>
 
 <template>
   <div class="bg-neutral-800 rounded-md p-4">
-    <h1 class="font-bold text-3xl">Telemetry analyzer</h1>
+    <h1 class="font-bold text-3xl mb-2">Telemetry analyzer</h1>
 
-    <div class="flex flex-row content-center py-3 gap-3">
+    <!-- <div class="flex flex-row content-center py-3 gap-3">
       <button class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block" @click="LoadNewReplayFile">
         <p>Choose telemetry file</p>
       </button>
@@ -136,7 +103,7 @@ onMounted(() => {
       <div class="flex justify-center items-center italic">
         {{ telemetryFile.file == null ? "no file chosen..." : telemetryFile.file.name }}
       </div>
-    </div>
+    </div> -->
 
     <DataManager/>
 

@@ -1,44 +1,71 @@
 <script setup>
-    import { ref } from "vue";
+    import Papa from 'papaparse';
+    import { fileOpen, supported } from "browser-fs-access";
+
     import DataManagerRow from "./DataManagerRow.vue";
-
-    const rows = ref([
-        {
-            id: 0,
-            active: false,
-            name: "First Data",
-            color: "red"
-        },
-        {
-            id: 1,
+    import { telemetryFileStore } from "../../stores/telemetryFileStore.js"
+    
+    const fileStore = telemetryFileStore();
+    
+    async function LoadData(){
+        const file = await fileOpen({
+            description: "RBR Telemetry File",
+            extensions: ['.tsv']
+        });
+        
+        let newFile = {
             active: true,
-            name: "Second Data",
-            color: "blue"
-        },
-    ]);
-
-    function deleteRow(row){
-        const index = rows.value.findIndex((r) => r.id === row.id);
-        if (index === -1) {
-            return;
-        }
-        rows.value.splice(index, 1);
+            name: file.name,
+            color: "red"
+        };
+        
+        fileStore.addNewFile(newFile);
     }
 
-    function toggleActiveState(row){
-        row.active = !row.active;
-    }
+//     async function LoadNewReplayFile(){
+//   const file = await fileOpen({
+//     description: "RBR Telemetry File",
+//     extensions: ['.tsv']
+//   });
+//   telemetryFile.file = file;
+
+//   Papa.parse(file, {
+//     header: true,
+//     complete: function(results) {
+
+// 		  let extractedData = results.data.map(x=>(
+//         {
+//           x: parseFloat(x.raceTime),
+//           y: parseFloat(x["speed"])
+//         }
+//       ));
+
+//       let newData = {
+//           datasets: [{ 
+//             data: extractedData,
+//             radius:0,
+//             showLine: true,
+//             borderWidth: 1,
+//             borderColor: '#FFA07A'
+//           }]
+//       }
+//       chartData.value = newData;
+// 	  }
+//   });
 
 </script>
 
 <template>
+    <button class="bg-neutral-700 px-4 py-2 mb-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block" @click="LoadData">
+        <p>Load data</p>
+    </button>
+
     <div class="flex flex-col gap-1">
         <DataManagerRow 
-        v-for="row in rows"
-        :key="row.id"
-        :telemetry-file="row"
-        @delete-row="deleteRow"
-        @toggle-active-state="toggleActiveState"/>
+        v-for="file in fileStore.files"
+        :key="file.id"
+        :telemetry-file="file"
+        @delete-row="fileStore.deleteFile(file)"
+        @toggle-active-state="fileStore.toggleActiveState(file)"/>
     </div>
-
 </template>
