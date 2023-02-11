@@ -16,7 +16,7 @@
         let newFile = {
             active: true,
             name: file.name,
-            color: "red"
+            color: "#FFFFFF"
         };
         
         fileStore.addNewFile(newFile);
@@ -65,7 +65,8 @@
         v-for="file in fileStore.files"
         :key="file.id"
         :telemetry-file="file"
-        @delete-row="fileStore.deleteFile(file)"
-        @toggle-active-state="fileStore.toggleActiveState(file)"/>
+        @delete-row="fileStore.deleteFile"
+        @toggle-active-state="fileStore.toggleActiveState"
+        @change-color="fileStore.changeColor"/>
     </div>
 </template>

@@ -30,6 +30,10 @@ export const telemetryFileStore = defineStore('telemetryFileStore', () => {
         file.active = !file.active;
     }
 
-    return { files, addNewFile, deleteFile, toggleActiveState, newFileId};
+    function changeColor(file, color){
+        file.color = color;
+    }
+
+    return { files, addNewFile, deleteFile, toggleActiveState, changeColor, newFileId};
 
 });

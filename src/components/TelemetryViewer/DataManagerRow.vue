@@ -1,5 +1,9 @@
 <script setup>
-    import { ref, onMounted} from 'vue';
+    import { ref, onMounted } from 'vue';
+
+    import { VSwatches } from 'vue3-swatches'
+    import 'vue3-swatches/dist/style.css'
+
     const props = defineProps({
         telemetryFile: {
             type: Object,
@@ -13,7 +17,9 @@
     }
     );
 
-    const emit = defineEmits(["deleteRow", "toggleActiveState"]);
+    const emit = defineEmits(["deleteRow", "toggleActiveState", "changeColor"]);
+
+    const color = ref();
 
     function deleteRow(){
         emit("deleteRow", props.telemetryFile);
@@ -23,10 +29,17 @@
         emit("toggleActiveState", props.telemetryFile);
     }
 
+    function colorChanged(value){
+        emit("changeColor", props.telemetryFile, value);
+    }
+
+    onMounted(() => {
+        color.value = props.telemetryFile.color;
+    })
 </script>
 
 <template>
-    <div class="flex flex-row justify-between bg-neutral-900 py-2 px-3 rounded-md text-sm">
+    <div class="flex flex-row justify-between items-center bg-neutral-900 py-1 px-3 rounded-md text-sm">
         <div class="flex flex-row items-center gap-x-2">
 
             <font-awesome-icon
@@ -36,9 +49,13 @@
                             'text-neutral-600 hover:text-neutral-400': !props.telemetryFile.active }"
                 @click="toggleActiveState"/>
 
-            <div
-                class="border-dotted border-2 border-black w-5 h-5 cursor-pointer"
-                :style="{ 'background-color': props.telemetryFile.color}"/>
+            <VSwatches 
+                v-model="color"
+                background-color="#57534e"
+                shapes="squares"
+                :swatch-size="30"
+                :trigger-style="{ width: '16px', height: '16px', borderRadius: '4px', marginTop:'5px'}"
+                @update:model-value="colorChanged"/>
 
             <p>{{ props.telemetryFile.name }}</p>
         </div>
