@@ -1,121 +1,17 @@
 <script setup>
-import { ref, reactive, onMounted } from "vue";
-import { fileOpen, supported } from "browser-fs-access";
-
-import { GridStack } from "gridstack";
-
-
-import "gridstack/dist/gridstack.min.css";
-import "gridstack/dist/gridstack-extra.min.css";
-
 import DataManager from "../components/TelemetryViewer/DataManager.vue";
-import GridItem from '../components/TelemetryViewer/GridItem.vue';
-import BarChart from "../components/TelemetryViewer/BarChart.vue"
-
-const telemetryFile = reactive({ file: null });
-
-// default widgets
-const widgets = ref([
-  // {
-  //   id: 1,
-  //   title: "First Widget",
-  //   grid: {
-  //     x: 0,
-  //     y: 0,
-  //     w: 1,
-  //     h: 6,
-  //   },
-  // },
-  // {
-  //   id: 2,
-  //   title: "Second Widget",
-  //   grid: {
-  //     x: 0,
-  //     y: 0,
-  //     w: 1,
-  //     h: 6,
-  //   },
-  // },
-]);
-
-// widgets grid
-const grid = ref(null);
-
-function initGridStack() {
-  grid.value = GridStack.init({
-    column: 1,
-    cellHeight: 100,
-    minRow: 1,
-    margin: 10,
-  });
-  makeWidgets(widgets.value);
-}
-
-function makeWidgets(widgets) {
-  widgets.forEach((widget) => {
-    makeWidget(widget);
-  });
-}
-
-function makeWidget(item) {
-  const elementSelector = `#${item.id}`;
-  return grid.value.makeWidget(elementSelector);
-}
-
-function deleteWidget(widget) {
-  const index = widgets.value.findIndex((w) => w.id === widget.id);
-  if (index === -1) {
-    return;
-  }
-  const selector = `#${CSS.escape(widget.id)}`;
-  grid.value.removeWidget(selector);
-  widgets.value.splice(index, 1);
-  grid.value.compact();
-}
-
-const chartData = ref({
-    datasets: [{ 
-        data: [
-          
-        ],
-        radius:0,
-        showLine: true,
-        borderWidth: 1,
-        borderColor: '#FFA07A'
-    }]
-})
-
-onMounted(() => {
-  initGridStack();
-});
-
+import GridManager from "../components/TelemetryViewer/GridManager.vue";
 </script>
 
 <template>
   <div class="bg-neutral-800 rounded-md p-4">
     <h1 class="font-bold text-3xl mb-2">Telemetry analyzer</h1>
 
-    <!-- <div class="flex flex-row content-center py-3 gap-3">
-      <button class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block" @click="LoadNewReplayFile">
-        <p>Choose telemetry file</p>
-      </button>
-
-      <div class="flex justify-center items-center italic">
-        {{ telemetryFile.file == null ? "no file chosen..." : telemetryFile.file.name }}
-      </div>
-    </div> -->
-
     <DataManager/>
 
-    <BarChart :chart-data="chartData"/>
+    <hr class="my-2 border-slate-400"/>
 
-    <div class="grid-stack">
-      <GridItem
-        v-for="widget in widgets"
-        :key="widget.id"
-        :data="widget"
-        @delete="deleteWidget"
-      />
-    </div>
+    <GridManager/>
+
   </div>
 </template>
