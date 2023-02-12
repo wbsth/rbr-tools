@@ -5,21 +5,26 @@
     import DataManagerRow from "./DataManagerRow.vue";
     import { telemetryFileStore } from "../../stores/telemetryFileStore.js"
     
+    import { basic } from 'vue3-swatches';
+
     const fileStore = telemetryFileStore();
     
+    let addedFilesCount = 0;
     async function LoadData(){
         const file = await fileOpen({
             description: "RBR Telemetry File",
             extensions: ['.tsv']
         });
         
-        let newFile = {
+        const newColor = basic.colors[addedFilesCount]; 
+        const newFile = {
             active: true,
             name: file.name,
-            color: "#FFFFFF"
+            color: newColor
         };
-        
         fileStore.addNewFile(newFile);
+        addedFilesCount += 1;
+        addedFilesCount %= basic.colors.length;
     }
 
 //     async function LoadNewReplayFile(){
