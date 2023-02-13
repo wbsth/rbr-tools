@@ -5,7 +5,7 @@
     import DataManagerRow from "./DataManagerRow.vue";
     import { telemetryFileStore } from "../../stores/telemetryFileStore.js"
     
-    import { basic } from 'vue3-swatches';
+    import colors from '../../data/colors';
 
     const fileStore = telemetryFileStore();
     
@@ -16,15 +16,24 @@
             extensions: ['.tsv']
         });
         
-        const newColor = basic.colors[addedFilesCount]; 
-        const newFile = {
-            active: true,
-            name: file.name,
-            color: newColor
-        };
-        fileStore.addNewFile(newFile);
-        addedFilesCount += 1;
-        addedFilesCount %= basic.colors.length;
+        let rawFile = null;
+
+        Papa.parse(file, {
+            header: true,
+            complete: function(results){
+                rawFile = results.data;
+                const newColor = colors.colors[addedFilesCount];
+                const newFile = {
+                    active: true,
+                    name: file.name,
+                    color: newColor,
+                    data: rawFile
+                };
+                fileStore.addNewFile(newFile);
+                addedFilesCount += 1;
+                addedFilesCount %= colors.colors.length;
+            }
+        })
     }
 
 //     async function LoadNewReplayFile(){

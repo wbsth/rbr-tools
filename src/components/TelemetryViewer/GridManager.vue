@@ -17,7 +17,10 @@ function initGridStack() {
     marginTop: 5,
     marginBottom: 5,
     marginLeft: 5,
-    marginRight: 5
+    marginRight: 5,
+    draggable:{
+      handle: '.drag-target'
+    }
   });
   makeWidgets(widgets.value);
 }
@@ -53,7 +56,7 @@ async function addWidget(){
         title: `Widget ${newId}`,
         grid: {
         w: 1,
-        h: 1,
+        h: 4,
         },
     };
     widgets.value.push(widget);
@@ -68,7 +71,7 @@ const widgets = ref([
     title: "First Widget",
     grid: {
       w: 1,
-      h: 2,
+      h: 4,
     },
   }
 ]);

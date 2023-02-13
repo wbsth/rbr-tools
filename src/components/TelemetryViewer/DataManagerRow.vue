@@ -3,6 +3,7 @@
 
     import { VSwatches } from 'vue3-swatches'
     import 'vue3-swatches/dist/style.css'
+    import colors from '../../data/colors';
 
     const props = defineProps({
         telemetryFile: {
@@ -53,11 +54,13 @@
                 v-model="color"
                 background-color="#57534e"
                 shapes="squares"
+                :swatches="colors.colors"
                 :swatch-size="30"
                 :trigger-style="{ width: '16px', height: '16px', borderRadius: '4px', marginTop:'5px'}"
                 @update:model-value="colorChanged"/>
 
             <p>{{ props.telemetryFile.name }}</p>
+            
         </div>
         <font-awesome-icon icon="fa-solid fa-xmark" class="my-auto hover:text-neutral-600 cursor-pointer" @click="deleteRow"/>
     </div>
