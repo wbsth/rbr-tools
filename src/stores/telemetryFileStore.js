@@ -7,6 +7,10 @@ export const telemetryFileStore = defineStore('telemetryFileStore', () => {
 
     ]);
     
+    const chartMaterials = ref({
+
+    });
+
     const newFileId = computed(() => {
         const idValues = files.value.map(x=>x.id);
         if (idValues.length == 0) return 0;
@@ -34,12 +38,12 @@ export const telemetryFileStore = defineStore('telemetryFileStore', () => {
         file.color = color;
     }
 
-    function prepareChartData(xAxis, yAxis){
+    function prepareChartData(settings){
         const extractedData = files.value.map(file=> {
             
             let preparedData = file.data.map(data => ({
-              x: parseFloat(data[xAxis]),
-              y: parseFloat(data[yAxis]),
+              x: parseFloat(data[settings.xAxis]),
+              y: parseFloat(data[settings.yAxis]),
             }));
             
             return {
@@ -52,12 +56,16 @@ export const telemetryFileStore = defineStore('telemetryFileStore', () => {
               label: file.name
             };
         })
-
-        return {
-            datasets: extractedData
-        }
+        
+        chartMaterials.value[settings.chartId] = {
+            chartData:{
+                datasets: extractedData
+            },
+            xUnit: settings.xUnit,
+            yUnit: settings.yUnit,        
+        };
     }
 
-    return { files, addNewFile, deleteFile, toggleActiveState, changeColor, newFileId, prepareChartData};
+    return { files, addNewFile, deleteFile, toggleActiveState, changeColor, newFileId, prepareChartData, chartMaterials};
 
 });

@@ -53,7 +53,6 @@ async function addWidget(){
 
     const widget = {
         id: newId,
-        title: `Widget ${newId}`,
         grid: {
         w: 1,
         h: 4,
@@ -68,7 +67,6 @@ async function addWidget(){
 const widgets = ref([
   {
     id: 1,
-    title: "First Widget",
     grid: {
       w: 1,
       h: 4,

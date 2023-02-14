@@ -36,37 +36,6 @@
         })
     }
 
-//     async function LoadNewReplayFile(){
-//   const file = await fileOpen({
-//     description: "RBR Telemetry File",
-//     extensions: ['.tsv']
-//   });
-//   telemetryFile.file = file;
-
-//   Papa.parse(file, {
-//     header: true,
-//     complete: function(results) {
-
-// 		  let extractedData = results.data.map(x=>(
-//         {
-//           x: parseFloat(x.raceTime),
-//           y: parseFloat(x["speed"])
-//         }
-//       ));
-
-//       let newData = {
-//           datasets: [{ 
-//             data: extractedData,
-//             radius:0,
-//             showLine: true,
-//             borderWidth: 1,
-//             borderColor: '#FFA07A'
-//           }]
-//       }
-//       chartData.value = newData;
-// 	  }
-//   });
-
 </script>
 
 <template>

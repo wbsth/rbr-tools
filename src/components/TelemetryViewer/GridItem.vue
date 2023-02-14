@@ -9,8 +9,7 @@ const props = defineProps({
   data: {
     type: Object,
     default: () => ({}),
-  },
-  isEditing: Boolean,
+  }
 });
 
 const emit = defineEmits(["delete"]);
@@ -21,17 +20,15 @@ function deleteThisWidget() {
 }
 
 const selectedChartType = ref({});
-const chartData = ref({});
-const xUnit = ref();
-const yUnit = ref();
-
 
 watch(selectedChartType, ()=>{
-  const temp = store.prepareChartData("raceTime", selectedChartType.value.columnName);
-  chartData.value = temp;
-
-  xUnit.value = "s";
-  yUnit.value = selectedChartType.value.unit;
+  store.prepareChartData({
+    chartId: props.data.id,
+    xAxis: "raceTime",
+    xUnit: "s",
+    yAxis: selectedChartType.value.columnName,
+    yUnit: selectedChartType.value.unit
+  }); 
 })
 
 </script>
@@ -56,11 +53,14 @@ watch(selectedChartType, ()=>{
       <div class="grow flex justify-center items-center">
 
         <p
-          v-if="Object.keys(chartData).length === 0"
+          v-if="!store.chartMaterials[props.data.id]"
           class="italic">no data
         </p>
-        
-        <ScatterChart v-else :chart-data="chartData" :x-unit="xUnit" :y-unit="yUnit"/>    
+        <ScatterChart 
+          v-else 
+          :chart-data="store.chartMaterials[data.id].chartData" 
+          :x-unit="store.chartMaterials[data.id].xUnit" 
+          :y-unit="store.chartMaterials[data.id].yUnit"/>
       </div>
     </div>
   </div>

@@ -79,7 +79,6 @@ const chartOptions = reactive({
 
 watch(props.chartData, (newValue, oldValue) => {
   const xMax = props.chartData.datasets[0].data.map(set=>set.x);
-  console.log(Math.max(...xMax));
   // chartOptions.plugins.zoom.limits.x.min = 100;
 }, { immediate: true });
 
