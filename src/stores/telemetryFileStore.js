@@ -41,26 +41,29 @@ export const telemetryFileStore = defineStore('telemetryFileStore', () => {
     function prepareChartData(settings){
         const extractedData = files.value.map(file=> {
             
-            let preparedData = file.data.map(data => ({
-              x: parseFloat(data[settings.xAxis]),
-              y: parseFloat(data[settings.yAxis]),
-            }));
-            
+            let preparedData = file.data.flatMap(
+                function(data){
+                    const yParsed = parseFloat(data[settings.yAxis]);
+                    const xParsed = parseFloat(data[settings.xAxis]);
+        
+                    if(!isNaN(yParsed) && !isNaN(xParsed))
+                        return {
+                            x:xParsed, y:yParsed
+                        }
+                    else{
+                        return []
+                    }
+                }
+            );
+
             return {
               data: preparedData,
-              radius: 0,
-              showLine: true,
-              borderWidth: 1,
-              borderColor: file.color,
-              backgroundColor: file.color,
-              label: file.name
+              name: file.name
             };
         })
         
         chartMaterials.value[settings.chartId] = {
-            chartData:{
-                datasets: extractedData
-            },
+            chartData: extractedData,
             xUnit: settings.xUnit,
             yUnit: settings.yUnit,        
         };

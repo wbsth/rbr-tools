@@ -5,7 +5,7 @@ import App from "./App.vue";
 import router from "./router";
 import "./main.css";
 
-
+import VueApexCharts from "vue3-apexcharts";
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
 /* import specific icons */
@@ -19,6 +19,7 @@ const app = createApp(App);
 
 app.use(router);
 app.use(pinia);
+app.use(VueApexCharts)
 
 app.component("font-awesome-icon", FontAwesomeIcon)
 
