@@ -18,6 +18,7 @@ function initGridStack() {
     marginBottom: 5,
     marginLeft: 5,
     marginRight: 5,
+    disableOneColumnMode:true,
     draggable:{
       handle: '.drag-target'
     }

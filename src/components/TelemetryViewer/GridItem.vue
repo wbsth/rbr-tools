@@ -50,8 +50,7 @@ watch(selectedChartType, ()=>{
           </button>
         </div>
       </div>
-      <div class="grow flex justify-center items-center">
-
+      <div class="grow flex justify-center items-center overflow-hidden">
         <p
           v-if="!store.chartMaterials[props.data.id]"
           class="italic">no data
