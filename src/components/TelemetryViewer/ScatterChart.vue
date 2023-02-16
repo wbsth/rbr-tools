@@ -9,18 +9,25 @@ const props = defineProps({
     },
     xUnit:{
       type: String,
-      default: "s"
+      default: ""
     },
     yUnit:{
       type: String,
-      default: "rpm"
-    }
+      default: ""
+    },
+    xLabel:{
+      type: String,
+      default: ""
+    },
+    yLabel:{
+      type: String,
+      default: ""
+    },
 });
 
 
 watch(props.chartData, (newValue, oldValue) => {
-  console.log('test')
-  // chartOptions.plugins.zoom.limits.x.min = 100;
+  console.log('smth changed!');
 }, { immediate: true });
 
 const options = ref({
@@ -31,10 +38,16 @@ const options = ref({
     }
   },
   xaxis: {
-    type: 'numeric'
+    type: 'numeric',
+    title:{
+      text: `${props.xLabel} [${props.xUnit}]`
+    }
   },
   yaxis: {
     type: 'numeric',
+    title:{
+      text: `${props.yLabel} [${props.yUnit}]`
+    }
     // labels: {
     //   formatter: function (val) {
     //     return val.toFixed(0)
@@ -67,10 +80,18 @@ const options = ref({
     // }
   }
 })
+
+const lineChart = ref({});
+
+function testFunction(){
+  lineChart.value.toggleSeries("test");  
+}
+
 </script>
 
 <template>
   <div class="h-full w-full">
-    <apexchart width="100%" height="100%" type="line" :options="options" :series="chartData"></apexchart>
+    <apexchart ref="lineChart" width="100%" height="100%" type="line" :options="options" :series="chartData"/>
   </div>
+  <p @click="testFunction">aaaaa</p>
 </template>

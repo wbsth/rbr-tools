@@ -26,8 +26,10 @@ watch(selectedChartType, ()=>{
     chartId: props.data.id,
     xAxis: "raceTime",
     xUnit: "s",
+    xLabel: "Time",
     yAxis: selectedChartType.value.columnName,
-    yUnit: selectedChartType.value.unit
+    yUnit: selectedChartType.value.unit,
+    yLabel: selectedChartType.value.label
   }); 
 })
 
@@ -40,7 +42,7 @@ watch(selectedChartType, ()=>{
       <div class="grid grid-cols-2 bg-neutral-900 px-2 py-1 no-drag drag-target">
         <div>
           <select v-model="selectedChartType" name="cars" class="border text-sm rounded-sm block w-64 p-1 bg-neutral-800 border-gray-900 placeholder-gray-400 text-white focus:border-neutral-600 focus:ring-neutral-600">
-            <option v-for="chart in chartTypes.charts" :key="chart.id" :value="chart">{{ chart.uiName }}</option>
+            <option v-for="chart in chartTypes.charts" :key="chart.id" :value="chart">{{ chart.label }}</option>
           </select>
         </div>
 
@@ -59,7 +61,10 @@ watch(selectedChartType, ()=>{
           v-else 
           :chart-data="store.chartMaterials[data.id].chartData" 
           :x-unit="store.chartMaterials[data.id].xUnit" 
-          :y-unit="store.chartMaterials[data.id].yUnit"/>
+          :y-unit="store.chartMaterials[data.id].yUnit"
+          :x-label="store.chartMaterials[data.id].xLabel"
+          :y-label="store.chartMaterials[data.id].yLabel"
+          />
       </div>
     </div>
   </div>

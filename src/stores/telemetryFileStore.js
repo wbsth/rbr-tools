@@ -58,14 +58,16 @@ export const telemetryFileStore = defineStore('telemetryFileStore', () => {
 
             return {
               data: preparedData,
-              name: file.name
+              name: "test"
             };
         })
         
         chartMaterials.value[settings.chartId] = {
             chartData: extractedData,
             xUnit: settings.xUnit,
-            yUnit: settings.yUnit,        
+            yUnit: settings.yUnit,
+            xLabel: settings.xLabel,
+            yLabel: settings.yLabel        
         };
     }
 

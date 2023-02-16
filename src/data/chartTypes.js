@@ -2,13 +2,13 @@ export default {
     charts: [
         {
             id: 1,
-            uiName: "Speed",
+            label: "Speed",
             columnName: "speed",
-            unit: "km/h"
+            unit: "km/h",
         },
         {
             id: 2,
-            uiName: "Engine RPM",
+            label: "Engine RPM",
             columnName: "engineRotation",
             unit: "rpm"
         }
