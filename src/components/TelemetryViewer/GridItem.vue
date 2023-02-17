@@ -59,7 +59,8 @@ watch(selectedChartType, ()=>{
         </p>
         <ScatterChart 
           v-else 
-          :chart-data="store.chartMaterials[data.id].chartData" 
+          :chart-data="store.chartMaterials[data.id].chartData"
+          :files-settings="store.filesSettings"
           :x-unit="store.chartMaterials[data.id].xUnit" 
           :y-unit="store.chartMaterials[data.id].yUnit"
           :x-label="store.chartMaterials[data.id].xLabel"

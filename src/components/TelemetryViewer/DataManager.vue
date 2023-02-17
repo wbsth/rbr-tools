@@ -23,13 +23,18 @@
             complete: function(results){
                 rawFile = results.data;
                 const newColor = colors.colors[addedFilesCount];
+
                 const newFile = {
+                    data: rawFile
+                };
+
+                const options = {
                     active: true,
                     name: file.name,
                     color: newColor,
-                    data: rawFile
                 };
-                fileStore.addNewFile(newFile);
+
+                fileStore.addNewFile(newFile, options);
                 addedFilesCount += 1;
                 addedFilesCount %= colors.colors.length;
             }
@@ -48,6 +53,7 @@
         v-for="file in fileStore.files"
         :key="file.id"
         :telemetry-file="file"
+        :file-settings="fileStore.filesSettings[file.id]"
         @delete-row="fileStore.deleteFile"
         @toggle-active-state="fileStore.toggleActiveState"
         @change-color="fileStore.changeColor"/>

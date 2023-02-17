@@ -3,74 +3,96 @@ import { computed, ref } from 'vue';
 
 export const telemetryFileStore = defineStore('telemetryFileStore', () => {
 
-    const files = ref([
+    const files = ref({
 
-    ]);
+    });
     
+    const filesSettings = ref({
+
+    });
+
     const chartMaterials = ref({
 
     });
 
     const newFileId = computed(() => {
-        const idValues = files.value.map(x=>x.id);
+        const idValues = Object.values(files.value).map(x=>x.id);
         if (idValues.length == 0) return 0;
         return Math.max(...idValues) + 1;
     });
 
-    function addNewFile(file){
+    function addNewFile(file, options){
         file.id = newFileId.value;
-        files.value.push(file);
+        files.value[file.id] = file;
+        filesSettings.value[file.id] = options;
     }
 
     function deleteFile(file){
-        const index = files.value.findIndex((r) => r.id === file.id);
-        if (index === -1) {
-            return;
-        }
-        files.value.splice(index, 1);
+        delete files.value[file.id];
+        delete filesSettings.value[file.id];
     }
 
     function toggleActiveState(file){
-        file.active = !file.active;
+        filesSettings.value[file.id].active = !filesSettings.value[file.id].active;
     }
 
     function changeColor(file, color){
-        file.color = color;
+        filesSettings.value[file.id].color = color;
     }
 
     function prepareChartData(settings){
-        const extractedData = files.value.map(file=> {
+        const extractedData = Object.values(files.value).map(file=> {
             
-            let preparedData = file.data.flatMap(
-                function(data){
-                    const yParsed = parseFloat(data[settings.yAxis]);
-                    const xParsed = parseFloat(data[settings.xAxis]);
-        
-                    if(!isNaN(yParsed) && !isNaN(xParsed))
-                        return {
-                            x:xParsed, y:yParsed
-                        }
-                    else{
-                        return []
-                    }
-                }
-            );
+            let preparedData = file.data.map(f=>
+                [parseFloat(f[settings.xAxis]), parseFloat(f[settings.yAxis])]
+                );
+
+            let filteredData = preparedData.filter(x=>!isNaN(x[0]) && !isNaN(x[1]));
 
             return {
-              data: preparedData,
-              name: "test"
+              data: filteredData,
+              lineWidth: 0.5,
+              name: filesSettings.value[file.id].name,
+              color: filesSettings.value[file.id].color,
+              fileId: file.id
             };
         })
         
         chartMaterials.value[settings.chartId] = {
-            chartData: extractedData,
+            chartData: {
+                chart:{
+                    type: "line",
+                    animation: false,
+                    zoomType: 'xy'
+                },
+                series: extractedData,
+                boost: {
+                    enabled: true,
+                    useGPUTranslations: true
+                },
+                yAxis:{
+                    title:{
+                        text: `${settings.yLabel} [${settings.yUnit}]`
+                    }
+                },
+                xAxis:{
+                    title:{
+                        text: `${settings.xLabel} [${settings.xUnit}]`
+                    },
+                    crosshair: true
+                },
+                title:{
+                    text: "",
+                    margin: 5
+                }
+            },
             xUnit: settings.xUnit,
             yUnit: settings.yUnit,
             xLabel: settings.xLabel,
-            yLabel: settings.yLabel        
+            yLabel: settings.yLabel,        
         };
     }
 
-    return { files, addNewFile, deleteFile, toggleActiveState, changeColor, newFileId, prepareChartData, chartMaterials};
+    return { files, addNewFile, deleteFile, toggleActiveState, changeColor, newFileId, prepareChartData, chartMaterials, filesSettings};
 
 });

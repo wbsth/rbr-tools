@@ -10,6 +10,12 @@
             type: Object,
             required: true,
             default: ()=>({
+
+            })
+        },
+        fileSettings:{
+            type: Object,
+            default: ()=>({
                 active: false,
                 name: "",
                 color: ""
@@ -35,7 +41,7 @@
     }
 
     onMounted(() => {
-        color.value = props.telemetryFile.color;
+        color.value = props.fileSettings.color;
     })
 </script>
 
@@ -46,8 +52,8 @@
             <font-awesome-icon
                 icon="fa-solid fa-eye"
                 class="cursor-pointer" 
-                :class="{'text-neutral-400 hover:text-neutral-600': props.telemetryFile.active,
-                            'text-neutral-600 hover:text-neutral-400': !props.telemetryFile.active }"
+                :class="{'text-neutral-400 hover:text-neutral-600': props.fileSettings.active,
+                            'text-neutral-600 hover:text-neutral-400': !props.fileSettings.active }"
                 @click="toggleActiveState"/>
 
             <VSwatches 
@@ -59,7 +65,7 @@
                 :trigger-style="{ width: '16px', height: '16px', borderRadius: '4px', marginTop:'5px'}"
                 @update:model-value="colorChanged"/>
 
-            <p>{{ props.telemetryFile.name }}</p>
+            <p>{{ props.fileSettings.name }}</p>
             
         </div>
         <font-awesome-icon icon="fa-solid fa-xmark" class="my-auto hover:text-neutral-600 cursor-pointer" @click="deleteRow"/>
