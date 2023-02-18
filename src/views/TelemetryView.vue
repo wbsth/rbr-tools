@@ -1,6 +1,7 @@
 <script setup>
 import DataManager from "../components/TelemetryViewer/DataManager.vue";
 import GridManager from "../components/TelemetryViewer/GridManager.vue";
+import TelemetrySettingsBar from "../components/TelemetryViewer/TelemetrySettingsBar.vue";
 </script>
 
 <template>
@@ -10,6 +11,8 @@ import GridManager from "../components/TelemetryViewer/GridManager.vue";
     <DataManager/>
 
     <hr class="my-2 border-slate-400"/>
+
+    <TelemetrySettingsBar/>
 
     <GridManager/>
 

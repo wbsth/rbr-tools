@@ -24,6 +24,10 @@ function initGridStack() {
     }
   });
   makeWidgets(widgets.value);
+
+  grid.on('resizestop', function(event, el) {
+    console.log(gridItems.value[0])
+  });
 }
 
 function makeWidgets(widgets) {
@@ -75,6 +79,8 @@ const widgets = ref([
   }
 ]);
 
+const gridItems = ref([])
+
 onMounted(() => {
   initGridStack();
 });
@@ -85,6 +91,7 @@ onMounted(() => {
     <div class="grid-stack">
       <GridItem
         v-for="widget in widgets"
+        ref="gridItems"
         :key="widget.id"
         :data="widget"
         @delete="deleteWidget"

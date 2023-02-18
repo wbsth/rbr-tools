@@ -1,7 +1,12 @@
 import { defineStore } from "pinia";
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+import chartTypes from "../data/chartTypes";
 
 export const telemetryFileStore = defineStore('telemetryFileStore', () => {
+    
+    const telemetrySettings = ref({
+        xAxisMode: 0
+    })
 
     const files = ref({
 
@@ -25,11 +30,15 @@ export const telemetryFileStore = defineStore('telemetryFileStore', () => {
         file.id = newFileId.value;
         files.value[file.id] = file;
         filesSettings.value[file.id] = options;
+
+        reloadCharts();
     }
 
     function deleteFile(file){
         delete files.value[file.id];
         delete filesSettings.value[file.id];
+
+        reloadCharts();
     }
 
     function toggleActiveState(file){
@@ -38,20 +47,30 @@ export const telemetryFileStore = defineStore('telemetryFileStore', () => {
 
     function changeColor(file, color){
         filesSettings.value[file.id].color = color;
+
+        const keys = Object.keys(chartMaterials.value)
+        keys.forEach(element => {
+          const f = chartMaterials.value[element];
+          const serieToUpdate = f.chartData.series.filter(x=>x.fileId == file.id)
+          serieToUpdate[0].color = color;
+        });
     }
 
     function prepareChartData(settings){
+        const xAxisSettings = chartTypes.xAxis.filter(x=>x.id == telemetrySettings.value.xAxisMode)[0];
+
         const extractedData = Object.values(files.value).map(file=> {
-            
             let preparedData = file.data.map(f=>
-                [parseFloat(f[settings.xAxis]), parseFloat(f[settings.yAxis])]
+                [parseFloat(f[xAxisSettings.xAxis]), parseFloat(f[settings.yAxis])]
                 );
 
-            let filteredData = preparedData.filter(x=>!isNaN(x[0]) && !isNaN(x[1]));
+            const filteredData = preparedData.filter(x=>!isNaN(x[0]) && !isNaN(x[1]));
+            
+            const sortedData = filteredData.sort(x=>x[0]);
 
             return {
-              data: filteredData,
-              lineWidth: 0.5,
+              data: sortedData,
+              lineWidth: 1,
               name: filesSettings.value[file.id].name,
               color: filesSettings.value[file.id].color,
               fileId: file.id
@@ -63,7 +82,7 @@ export const telemetryFileStore = defineStore('telemetryFileStore', () => {
                 chart:{
                     type: "line",
                     animation: false,
-                    zoomType: 'xy'
+                    zoomType: 'xy',
                 },
                 series: extractedData,
                 boost: {
@@ -72,12 +91,18 @@ export const telemetryFileStore = defineStore('telemetryFileStore', () => {
                 },
                 yAxis:{
                     title:{
-                        text: `${settings.yLabel} [${settings.yUnit}]`
+                        text: `${settings.yLabel} [${settings.yUnit}]`,
+                        style:{
+                            fontSize: "14px"
+                        }
                     }
                 },
                 xAxis:{
                     title:{
-                        text: `${settings.xLabel} [${settings.xUnit}]`
+                        text: `${xAxisSettings.xLabel} [${xAxisSettings.xUnit}]`,
+                        style:{
+                            fontSize: "14px"
+                        }
                     },
                     crosshair: true
                 },
@@ -86,13 +111,23 @@ export const telemetryFileStore = defineStore('telemetryFileStore', () => {
                     margin: 5
                 }
             },
-            xUnit: settings.xUnit,
+            xUnit: xAxisSettings.xUnit,
             yUnit: settings.yUnit,
-            xLabel: settings.xLabel,
-            yLabel: settings.yLabel,        
+            xLabel: xAxisSettings.xLabel,
+            yLabel: settings.yLabel,
+            settings: settings        
         };
     }
 
-    return { files, addNewFile, deleteFile, toggleActiveState, changeColor, newFileId, prepareChartData, chartMaterials, filesSettings};
+    function reloadCharts(){
+        const keys = Object.keys(chartMaterials.value)
+        keys.forEach(key => {
+            const settings = {};
+            Object.assign(settings, chartMaterials.value[key].settings);
+            prepareChartData(settings);//chartMaterials.value[key] = prepareChartData(chartMaterials.value[key].settings);
+        });
+    }
+
+    return { files, addNewFile, deleteFile, toggleActiveState, changeColor, newFileId, prepareChartData, chartMaterials, filesSettings, telemetrySettings, reloadCharts};
 
 });

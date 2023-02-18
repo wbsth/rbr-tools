@@ -4,60 +4,17 @@ import { createPinia } from "pinia";
 import App from "./App.vue";
 import router from "./router";
 import "./main.css";
+import myTheme from "./data/highchartsTheme"
 
 import HighchartsVue from 'highcharts-vue'
 import Highcharts from "highcharts";
 
-Highcharts.theme = 
-{
-    "colors": ["#F92672", "#66D9EF", "#A6E22E", "#A6E22E"],
-    "chart": {
-      "backgroundColor": "#272822",
-      "style": {
-        "fontFamily": "Inconsolata",
-        "color": "#A2A39C"
-      }
-    },
-    "title": {
-      "style": {
-        "color": "#A2A39C"
-      },
-      "align": "left"
-    },
-    "subtitle": {
-      "style": {
-        "color": "#A2A39C"
-      },
-      "align": "left"
-    },
-    "legend": {
-      "align": "right",
-      "verticalAlign": "bottom",
-      "itemStyle": {
-        "fontWeight": "normal",
-        "color": "#A2A39C"
-      }
-    },
-    "xAxis": {
-      "gridLineDashStyle": "Dot",
-      "gridLineWidth": 1,
-      "gridLineColor": "#A2A39C",
-      "lineColor": "#A2A39C",
-      "minorGridLineColor": "#A2A39C",
-      "tickColor": "#A2A39C",
-      "tickWidth": 1
-    },
-    "yAxis": {
-      "gridLineDashStyle": "Dot",
-      "gridLineColor": "#A2A39C",
-      "lineColor": "#A2A39C",
-      "minorGridLineColor": "#A2A39C",
-      "tickColor": "#A2A39C",
-      "tickWidth": 1
-    }
-  };
+import VueResize from 'vue3-resize'
+import 'vue3-resize/dist/vue3-resize.css'
 
-  Highcharts.setOptions(Highcharts.theme);
+
+Highcharts.theme = myTheme;
+Highcharts.setOptions(Highcharts.theme);
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -73,6 +30,7 @@ const app = createApp(App);
 app.use(router);
 app.use(pinia);
 app.use(HighchartsVue)
+app.use(VueResize)
 
 app.component("font-awesome-icon", FontAwesomeIcon)
 

@@ -13,4 +13,18 @@ export default {
             unit: "rpm"
         }
     ],
+    xAxis:[
+        {
+            id: 0,
+            xAxis: "driveLineLocation",
+            xUnit: "m",
+            xLabel: "Driveline Distance",
+        },
+        {
+            id: 1,
+            xAxis: "raceTime",
+            xUnit: "s",
+            xLabel: "Time",
+        }
+    ]
   };
