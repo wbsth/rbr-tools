@@ -24,10 +24,6 @@ function initGridStack() {
     }
   });
   makeWidgets(widgets.value);
-
-  grid.on('resizestop', function(event, el) {
-    console.log(gridItems.value[0])
-  });
 }
 
 function makeWidgets(widgets) {
