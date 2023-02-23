@@ -18,9 +18,9 @@ import { RouterLink, RouterView } from "vue-router";
       >Setup replacer</router-link
     >
 
-    <router-link 
-    to="/telemetry"
-    class="py-2 px-3 hover:bg-neutral-700 inline-block">
+    <router-link
+      to="/telemetry"
+      class="py-2 px-3 hover:bg-neutral-700 inline-block">
       Telemetry analyzer
     </router-link>
 

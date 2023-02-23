@@ -52,11 +52,11 @@ function isArrayEqual(a, b) {
 }
 
 export function isNumber(char) {
-  if (typeof char !== 'string') {
+  if (typeof char !== "string") {
     return false;
   }
 
-  if (char.trim() === '') {
+  if (char.trim() === "") {
     return false;
   }
 
@@ -64,5 +64,5 @@ export function isNumber(char) {
 }
 
 export function isCharacterALetter(char) {
-  return char.toLowerCase() != char.toUpperCase()
+  return char.toLowerCase() != char.toUpperCase();
 }

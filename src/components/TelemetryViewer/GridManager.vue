@@ -1,10 +1,10 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick } from "vue";
 
 import { GridStack } from "gridstack";
 import "gridstack/dist/gridstack.min.css";
 import "gridstack/dist/gridstack-extra.min.css";
-import GridItem from './GridItem.vue';
+import GridItem from "./GridItem.vue";
 
 // widgets grid
 let grid = null;
@@ -18,10 +18,10 @@ function initGridStack() {
     marginBottom: 5,
     marginLeft: 5,
     marginRight: 5,
-    disableOneColumnMode:true,
-    draggable:{
-      handle: '.drag-target'
-    }
+    disableOneColumnMode: true,
+    draggable: {
+      handle: ".drag-target",
+    },
   });
   makeWidgets(widgets.value);
 }
@@ -48,22 +48,21 @@ function deleteWidget(widget) {
   grid.compact();
 }
 
-async function addWidget(){
-    const ids = widgets.value.map(x=>x.id);
-    const newId = ids.length > 0 ? Math.max(...ids) + 1 : 0;
+async function addWidget() {
+  const ids = widgets.value.map((x) => x.id);
+  const newId = ids.length > 0 ? Math.max(...ids) + 1 : 0;
 
-    const widget = {
-        id: newId,
-        grid: {
-        w: 1,
-        h: 4,
-        },
-    };
-    widgets.value.push(widget);
-    await nextTick();
-    makeWidget(widget);
+  const widget = {
+    id: newId,
+    grid: {
+      w: 1,
+      h: 4,
+    },
+  };
+  widgets.value.push(widget);
+  await nextTick();
+  makeWidget(widget);
 }
-
 
 const widgets = ref([
   {
@@ -72,30 +71,29 @@ const widgets = ref([
       w: 1,
       h: 4,
     },
-  }
+  },
 ]);
 
-const gridItems = ref([])
+const gridItems = ref([]);
 
 onMounted(() => {
   initGridStack();
 });
-
 </script>
 
 <template>
-    <div class="grid-stack">
-      <GridItem
-        v-for="widget in widgets"
-        ref="gridItems"
-        :key="widget.id"
-        :data="widget"
-        @delete="deleteWidget"
-      />
-    </div>
-    
-    <button class="bg-neutral-700 px-4 py-2 mb-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block" @click="addWidget">
-        <p>Add graph</p>
-    </button>
+  <div class="grid-stack">
+    <GridItem
+      v-for="widget in widgets"
+      ref="gridItems"
+      :key="widget.id"
+      :data="widget"
+      @delete="deleteWidget" />
+  </div>
 
+  <button
+    class="bg-neutral-700 px-4 py-2 mb-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block"
+    @click="addWidget">
+    <p>Add graph</p>
+  </button>
 </template>

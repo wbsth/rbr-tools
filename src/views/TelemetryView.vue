@@ -8,13 +8,12 @@ import TelemetrySettingsBar from "../components/TelemetryViewer/TelemetrySetting
   <div class="bg-neutral-800 rounded-md p-4">
     <h1 class="font-bold text-3xl mb-2">Telemetry analyzer</h1>
 
-    <DataManager/>
+    <DataManager />
 
-    <hr class="my-2 border-slate-400"/>
+    <hr class="my-2 border-slate-400" />
 
-    <TelemetrySettingsBar/>
+    <TelemetrySettingsBar />
 
-    <GridManager/>
-
+    <GridManager />
   </div>
 </template>

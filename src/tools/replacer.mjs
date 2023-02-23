@@ -31,7 +31,9 @@ export async function replaceSetup(replayFile, setupFile) {
       const setupIndexes = findSetupIndex(replayByteArray);
 
       // prepare strings
-      let replayString = decoder.decode(replayByteArray.slice(setupIndexes.start, setupIndexes.end));
+      let replayString = decoder.decode(
+        replayByteArray.slice(setupIndexes.start, setupIndexes.end)
+      );
       let setupString = decoder.decode(setupyByteArray);
 
       // extract values from both setups
@@ -39,11 +41,16 @@ export async function replaceSetup(replayFile, setupFile) {
       let setupIntegers = ExtractIntegers(setupString);
 
       // check if number of extracted values matches
-      if (replayIntegers.values.Count != setupIntegers.values.Count){
-        throw 'Replay setup and provided setup have different structure'
+      if (replayIntegers.values.Count != setupIntegers.values.Count) {
+        throw "Replay setup and provided setup have different structure";
       }
-      
-      returnArray = Replace(replayByteArray, replayIntegers, setupIntegers, setupIndexes);
+
+      returnArray = Replace(
+        replayByteArray,
+        replayIntegers,
+        setupIntegers,
+        setupIndexes
+      );
 
       return {
         data: returnArray,
@@ -83,7 +90,10 @@ function ExtractIntegers(text) {
     // if not, check if there is any data in temporary string
     else if (tempString.length > 0) {
       // make sure that numerical value is not a part of text
-      if (!isCharacterALetter(text[indexStart - 1]) && text[indexStart - 1] != "_") {
+      if (
+        !isCharacterALetter(text[indexStart - 1]) &&
+        text[indexStart - 1] != "_"
+      ) {
         extractedValuesList.push(tempString);
         indexes.push(indexStart);
       }
@@ -98,40 +108,40 @@ function ExtractIntegers(text) {
   };
 }
 
-function Replace(replayByteArray, replayIntegers, setupIntegers, setupIndexes)
-{
-    let encoder = new TextEncoder();
-    // iterate through values extracted from replay file
-    for (let i = 0; i < replayIntegers.values.length; i++)
-    {
-        // if value should be changed (because it differs from the provided setup value)
-        if (replayIntegers.values[i] != setupIntegers.values[i])
-        {
-            //if values are of the same length, simply copy it
-            if (replayIntegers.values[i].length == setupIntegers.values[i].length)
-            {
-                let temp = encoder.encode(setupIntegers.values[i]);
+function Replace(replayByteArray, replayIntegers, setupIntegers, setupIndexes) {
+  let encoder = new TextEncoder();
+  // iterate through values extracted from replay file
+  for (let i = 0; i < replayIntegers.values.length; i++) {
+    // if value should be changed (because it differs from the provided setup value)
+    if (replayIntegers.values[i] != setupIntegers.values[i]) {
+      //if values are of the same length, simply copy it
+      if (replayIntegers.values[i].length == setupIntegers.values[i].length) {
+        let temp = encoder.encode(setupIntegers.values[i]);
 
-                for(let ti = 0; ti < temp.length; ti++){
-                  replayByteArray[ti + setupIndexes.start + replayIntegers.indexes[i]] = temp[ti];
-                }
-                //Array.Copy(temp, 0, replayByteArray, setupIndexes.start + replayIntegers.indexes[i], temp.length);
-            }
-            // if values length is different, some parsing is needed
-            else if (setupIntegers.values[i].includes('.') && replayIntegers.values[i].includes('.'))
-            {
-                let lengthDifference = setupIntegers.values[i].length - replayIntegers.values[i].length;
-                let zeroes = setupIntegers.values[i].split('.')[1].length;
-                let parsed = parseFloat(setupIntegers.values[i]);
-                let formatted = parsed.toFixed(zeroes - lengthDifference);
-                let temp = encoder.encode(formatted);
-
-                for(let ti = 0; ti < temp.length; ti++){
-                  replayByteArray[ti + setupIndexes.start + replayIntegers.indexes[i]] = temp[ti];
-                }
-            }
+        for (let ti = 0; ti < temp.length; ti++) {
+          replayByteArray[ti + setupIndexes.start + replayIntegers.indexes[i]] =
+            temp[ti];
         }
+        //Array.Copy(temp, 0, replayByteArray, setupIndexes.start + replayIntegers.indexes[i], temp.length);
+      }
+      // if values length is different, some parsing is needed
+      else if (
+        setupIntegers.values[i].includes(".") &&
+        replayIntegers.values[i].includes(".")
+      ) {
+        let lengthDifference =
+          setupIntegers.values[i].length - replayIntegers.values[i].length;
+        let zeroes = setupIntegers.values[i].split(".")[1].length;
+        let parsed = parseFloat(setupIntegers.values[i]);
+        let formatted = parsed.toFixed(zeroes - lengthDifference);
+        let temp = encoder.encode(formatted);
 
+        for (let ti = 0; ti < temp.length; ti++) {
+          replayByteArray[ti + setupIndexes.start + replayIntegers.indexes[i]] =
+            temp[ti];
+        }
+      }
     }
-    return replayByteArray;
+  }
+  return replayByteArray;
 }

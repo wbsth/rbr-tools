@@ -5,14 +5,13 @@ import SetupPreview from "../components/SetupPreview.vue";
 
 const fileData = reactive({ file: null });
 
-async function LoadNewReplayFile(){
+async function LoadNewReplayFile() {
   const file = await fileOpen({
     description: "RBR Replay File",
-    extensions: ['.rpl']
+    extensions: [".rpl"],
   });
-  fileData.file = file;     
+  fileData.file = file;
 }
-
 </script>
 
 <template>
@@ -28,7 +27,9 @@ async function LoadNewReplayFile(){
     </p>
 
     <div class="flex flex-row content-center py-3 gap-3">
-      <button class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block" @click="LoadNewReplayFile">
+      <button
+        class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block"
+        @click="LoadNewReplayFile">
         <p>Choose replay file</p>
       </button>
 

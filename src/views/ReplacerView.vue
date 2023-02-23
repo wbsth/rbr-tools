@@ -8,7 +8,7 @@ const fileData = reactive({ setupFile: null, replayFile: null });
 async function loadSetupFile() {
   const file = await fileOpen({
     description: "RBR Setup File",
-    extensions: ['.lsp']
+    extensions: [".lsp"],
   });
   fileData.setupFile = file;
 }
@@ -16,11 +16,10 @@ async function loadSetupFile() {
 async function loadReplayFile() {
   const file = await fileOpen({
     description: "RBR Replay File",
-    extensions: ['.rpl']
+    extensions: [".rpl"],
   });
   fileData.replayFile = file;
 }
-
 </script>
 
 <template>
@@ -36,7 +35,9 @@ async function loadReplayFile() {
     </p>
 
     <div class="flex flex-row content-center gap-3 py-3">
-      <button class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block w-40 text-center" @click="loadReplayFile">
+      <button
+        class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block w-40 text-center"
+        @click="loadReplayFile">
         <p>Choose replay file</p>
       </button>
 
@@ -50,7 +51,9 @@ async function loadReplayFile() {
     </div>
 
     <div class="flex flex-row content-center gap-3 pb-3">
-      <button class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block w-40 text-center" @click="loadSetupFile">
+      <button
+        class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block w-40 text-center"
+        @click="loadSetupFile">
         <p>Choose setup file</p>
       </button>
 
@@ -66,7 +69,6 @@ async function loadReplayFile() {
     <SetupReplacer
       v-if="fileData.setupFile != null && fileData.replayFile != null"
       :setup-file="fileData.setupFile"
-      :replay-file="fileData.replayFile"
-    />
+      :replay-file="fileData.replayFile" />
   </div>
 </template>

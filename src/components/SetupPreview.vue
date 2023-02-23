@@ -21,8 +21,8 @@ async function saveToDisk() {
 
   await fileSave(blob, {
     fileName: fileName,
-    extensions: ['.lsp'],
-    description: "RBR Setup File"
+    extensions: [".lsp"],
+    description: "RBR Setup File",
   });
 }
 
@@ -52,8 +52,7 @@ watch(
     <div v-if="canShowDownloadButton">
       <button
         class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600"
-        @click="saveToDisk"
-      >
+        @click="saveToDisk">
         Save to disk
       </button>
       <p class="bg-neutral-900 p-3 rounded-md whitespace-pre-wrap mt-3">
