@@ -2,7 +2,7 @@
 import Papa from "papaparse";
 import { fileOpen, supported } from "browser-fs-access";
 
-import { DataManagerRow } from "./DataManagerRow.vue";
+import DataManagerRow from "./DataManagerRow.vue";
 import { telemetryFileStore } from "../../stores/telemetryFileStore.js";
 
 import colors from "../../data/colors";
