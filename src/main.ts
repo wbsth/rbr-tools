@@ -7,13 +7,12 @@ import "./main.css";
 import myTheme from "./data/highchartsTheme";
 
 import HighchartsVue from "highcharts-vue";
-import Highcharts from "highcharts";
+import * as Highcharts from "highcharts";
 
-import VueResize from "vue3-resize";
+import * as VueResize from "vue3-resize";
 import "vue3-resize/dist/vue3-resize.css";
 
-Highcharts.theme = myTheme;
-Highcharts.setOptions(Highcharts.theme);
+Highcharts.setOptions(myTheme as any);
 
 /* import the fontawesome core */
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -28,7 +27,7 @@ const app = createApp(App);
 
 app.use(router);
 app.use(pinia);
-app.use(HighchartsVue);
+app.use(HighchartsVue as any);
 app.use(VueResize);
 
 app.component("font-awesome-icon", FontAwesomeIcon);
