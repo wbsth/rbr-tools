@@ -1,9 +1,12 @@
+import type { FileWithHandle } from "browser-fs-access";
 import { findSetupIndex } from "./misc.mjs";
 
-export async function extractSetup(file) {
+export async function extractSetup(
+  file: FileWithHandle
+): Promise<ExtractionResult> {
   let extractMessage = "";
   let wasFailed = false;
-  let setupArray = [];
+  let setupArray = new Uint8Array(0);
 
   const byteBuffer = await file.arrayBuffer();
   const fileExtension = file.name.split(".").slice(-1)[0];
@@ -29,4 +32,10 @@ export async function extractSetup(file) {
     message: extractMessage,
     failed: wasFailed,
   };
+}
+
+export interface ExtractionResult {
+  data: Uint8Array;
+  message: string;
+  failed: boolean;
 }

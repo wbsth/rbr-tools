@@ -1,16 +1,16 @@
-<script setup>
-import { reactive } from "vue";
-import { fileOpen, supported } from "browser-fs-access";
+<script setup lang="ts">
+import { ref } from "vue";
+import { fileOpen, type FileWithHandle } from "browser-fs-access";
 import SetupPreview from "../components/SetupPreview.vue";
 
-const fileData = reactive({ file: null });
+const fileData = ref<FileWithHandle>();
 
 async function LoadNewReplayFile() {
   const file = await fileOpen({
     description: "RBR Replay File",
     extensions: [".rpl"],
   });
-  fileData.file = file;
+  fileData.value = file;
 }
 </script>
 
@@ -34,11 +34,11 @@ async function LoadNewReplayFile() {
       </button>
 
       <div class="flex justify-center items-center italic">
-        {{ fileData.file == null ? "no file chosen..." : fileData.file.name }}
+        {{ fileData == null ? "no file chosen..." : fileData.name }}
       </div>
     </div>
 
-    <SetupPreview v-if="fileData.file != null" :file="fileData.file" />
+    <SetupPreview v-if="fileData != null" :file="fileData" />
   </div>
 </template>
 

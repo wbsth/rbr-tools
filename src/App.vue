@@ -9,14 +9,17 @@ import { RouterLink, RouterView } from "vue-router";
   </div>
 
   <div class="my-2 bg-neutral-800 rounded-md">
-    <router-link to="/" class="ml-2 py-2 px-3 hover:bg-neutral-700 inline-block"
-      >Setup extractor</router-link
-    >
+    <router-link
+      to="/"
+      class="ml-2 py-2 px-3 hover:bg-neutral-700 inline-block">
+      Setup extractor
+    </router-link>
+
     <router-link
       to="/replacer"
-      class="py-2 px-3 hover:bg-neutral-700 inline-block"
-      >Setup replacer</router-link
-    >
+      class="py-2 px-3 hover:bg-neutral-700 inline-block">
+      Setup replacer
+    </router-link>
 
     <router-link
       to="/telemetry"

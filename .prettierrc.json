@@ -1,4 +1,5 @@
 {
   "vueIndentScriptAndStyle": false,
-  "bracketSameLine": true
+  "bracketSameLine": true,
+  "endOfLine": "auto"
 }
