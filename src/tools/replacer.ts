@@ -1,10 +1,15 @@
-import { findSetupIndex, isCharacterALetter, isNumber } from "./misc.mjs";
+import type { FileWithHandle } from "browser-fs-access";
+import { findSetupIndex, isCharacterALetter, isNumber, type FileOperationResult, type findSetupIndexResult } from "./misc.js";
 
-export async function replaceSetup(replayFile, setupFile) {
+export async function replaceSetup(
+  replayFile: FileWithHandle,
+  setupFile: FileWithHandle
+) : Promise<FileOperationResult> {
+{
   let errorMessage = "";
   try {
     let wasFailed = false;
-    let returnArray = [];
+    let returnArray = new Uint8Array();
 
     const replayfileExtension = replayFile.name.split(".").slice(-1)[0];
     const setupFileExtension = setupFile.name.split(".").slice(-1)[0];
@@ -45,7 +50,7 @@ export async function replaceSetup(replayFile, setupFile) {
         throw "Replay setup and provided setup have different structure";
       }
 
-      returnArray = Replace(
+      const test = Replace(
         replayByteArray,
         replayIntegers,
         setupIntegers,
@@ -68,13 +73,14 @@ export async function replaceSetup(replayFile, setupFile) {
     console.log(error);
     return {
       data: null,
-      message: error,
+      message: errorMessage,
       failed: true,
     };
   }
 }
 
-function ExtractIntegers(text) {
+function ExtractIntegers(text: string) : ExtractedIntegersResult {
+
   let extractedValuesList = [];
   let indexes = [];
   let tempString = "";
@@ -108,7 +114,7 @@ function ExtractIntegers(text) {
   };
 }
 
-function Replace(replayByteArray, replayIntegers, setupIntegers, setupIndexes) {
+function Replace(replayByteArray: Uint8Array, replayIntegers:ExtractedIntegersResult, setupIntegers:ExtractedIntegersResult, setupIndexes:findSetupIndexResult) : Uint8Array{
   let encoder = new TextEncoder();
   // iterate through values extracted from replay file
   for (let i = 0; i < replayIntegers.values.length; i++) {
@@ -144,4 +150,10 @@ function Replace(replayByteArray, replayIntegers, setupIntegers, setupIndexes) {
     }
   }
   return replayByteArray;
+}
+
+
+interface ExtractedIntegersResult {
+  values: string[];
+  indexes: number[];
 }

@@ -1,12 +1,12 @@
-<script setup>
-import { reactive, computed } from "vue";
-import { replaceSetup } from "../tools/replacer.mjs";
-import { fileSave } from "browser-fs-access";
+<script setup lang="ts">
+import { reactive } from "vue";
+import { replaceSetup } from "../tools/replacer.js;
+import { fileSave, type FileWithHandle } from "browser-fs-access";
 
-const props = defineProps({
-  replayFile: File,
-  setupFile: File,
-});
+const props = defineProps<{
+  replayFile: FileWithHandle;
+  setupFile: FileWithHandle;
+}>();
 
 const replaceResult = reactive({});
 

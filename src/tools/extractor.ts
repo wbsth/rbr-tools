@@ -1,9 +1,9 @@
 import type { FileWithHandle } from "browser-fs-access";
-import { findSetupIndex } from "./misc.mjs";
+import { findSetupIndex, type FileOperationResult } from "./misc.js";
 
 export async function extractSetup(
   file: FileWithHandle
-): Promise<ExtractionResult> {
+): Promise<FileOperationResult> {
   let extractMessage = "";
   let wasFailed = false;
   let setupArray = new Uint8Array(0);
@@ -32,10 +32,4 @@ export async function extractSetup(
     message: extractMessage,
     failed: wasFailed,
   };
-}
-
-export interface ExtractionResult {
-  data: Uint8Array;
-  message: string;
-  failed: boolean;
 }

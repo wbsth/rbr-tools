@@ -1,16 +1,18 @@
-<script setup>
-import { reactive } from "vue";
+<script setup lang="ts">
+import { ref } from "vue";
 import SetupReplacer from "../components/SetupReplacer.vue";
-import { fileOpen } from "browser-fs-access";
+import { fileOpen, type FileWithHandle } from "browser-fs-access";
 
-const fileData = reactive({ setupFile: null, replayFile: null });
+// const fileData = reactive({ setupFile: null, replayFile: null });
+const setupFile = ref<FileWithHandle>();
+const replayFile = ref<FileWithHandle>();
 
 async function loadSetupFile() {
   const file = await fileOpen({
     description: "RBR Setup File",
     extensions: [".lsp"],
   });
-  fileData.setupFile = file;
+  setupFile.value = file;
 }
 
 async function loadReplayFile() {
@@ -18,7 +20,7 @@ async function loadReplayFile() {
     description: "RBR Replay File",
     extensions: [".rpl"],
   });
-  fileData.replayFile = file;
+  replayFile.value = file;
 }
 </script>
 
@@ -42,11 +44,7 @@ async function loadReplayFile() {
       </button>
 
       <div class="flex justify-center items-center italic">
-        {{
-          fileData.replayFile == null
-            ? "no file chosen..."
-            : fileData.replayFile.name
-        }}
+        {{ replayFile == null ? "no file chosen..." : replayFile.name }}
       </div>
     </div>
 
@@ -58,17 +56,13 @@ async function loadReplayFile() {
       </button>
 
       <div class="flex justify-center items-center italic">
-        {{
-          fileData.setupFile == null
-            ? "no file chosen..."
-            : fileData.setupFile.name
-        }}
+        {{ setupFile == null ? "no file chosen..." : setupFile.name }}
       </div>
     </div>
 
     <SetupReplacer
-      v-if="fileData.setupFile != null && fileData.replayFile != null"
-      :setup-file="fileData.setupFile"
-      :replay-file="fileData.replayFile" />
+      v-if="setupFile != null && replayFile != null"
+      :setup-file="setupFile"
+      :replay-file="replayFile" />
   </div>
 </template>
