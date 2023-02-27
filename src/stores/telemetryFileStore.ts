@@ -2,12 +2,27 @@ import { defineStore } from "pinia";
 import { computed, ref, watch } from "vue";
 import chartTypes from "../data/chartTypes";
 
+export enum xAxisUnit {
+  distance,
+  time,
+}
+
+interface IFile {
+  id: number;
+}
+
+interface ISettings {
+  active: boolean;
+  name: string;
+  color: string;
+}
+
 export const telemetryFileStore = defineStore("telemetryFileStore", () => {
   const telemetrySettings = ref({
-    xAxisMode: 0,
+    xAxisMode: xAxisUnit.distance,
   });
 
-  const files = ref({});
+  const files = ref<Record<number, IFile>>();
 
   const filesSettings = ref({});
 
@@ -19,26 +34,27 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
     return Math.max(...idValues) + 1;
   });
 
-  function addNewFile(file, options) {
+  function addNewFile(file: IFile, options: ISettings) {
     file.id = newFileId.value;
+
     files.value[file.id] = file;
     filesSettings.value[file.id] = options;
 
     reloadCharts();
   }
 
-  function deleteFile(file) {
+  function deleteFile(file: IFile) {
     delete files.value[file.id];
     delete filesSettings.value[file.id];
 
     reloadCharts();
   }
 
-  function toggleActiveState(file) {
+  function toggleActiveState(file: IFile) {
     filesSettings.value[file.id].active = !filesSettings.value[file.id].active;
   }
 
-  function changeColor(file, color) {
+  function changeColor(file: IFile, color: String) {
     filesSettings.value[file.id].color = color;
 
     const keys = Object.keys(chartMaterials.value);
@@ -51,7 +67,7 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
     });
   }
 
-  function prepareChartData(settings) {
+  function prepareChartData(settings: ISettings) {
     const xAxisSettings = chartTypes.xAxis.filter(
       (x) => x.id == telemetrySettings.value.xAxisMode
     )[0];
