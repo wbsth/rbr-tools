@@ -1,15 +1,19 @@
 import type { FileWithHandle } from "browser-fs-access";
-import { findSetupIndex, isCharacterALetter, isNumber, type FileOperationResult, type findSetupIndexResult } from "./misc.js";
+import {
+  findSetupIndex,
+  isCharacterALetter,
+  isNumber,
+  type FileOperationResult,
+  type findSetupIndexResult,
+} from "./misc.js";
 
 export async function replaceSetup(
   replayFile: FileWithHandle,
   setupFile: FileWithHandle
-) : Promise<FileOperationResult> {
-{
-  let errorMessage = "";
+): Promise<FileOperationResult> {
+  const errorMessage = "";
   try {
-    let wasFailed = false;
-    let returnArray = new Uint8Array();
+    const wasFailed = false;
 
     const replayfileExtension = replayFile.name.split(".").slice(-1)[0];
     const setupFileExtension = setupFile.name.split(".").slice(-1)[0];
@@ -36,21 +40,21 @@ export async function replaceSetup(
       const setupIndexes = findSetupIndex(replayByteArray);
 
       // prepare strings
-      let replayString = decoder.decode(
+      const replayString = decoder.decode(
         replayByteArray.slice(setupIndexes.start, setupIndexes.end)
       );
-      let setupString = decoder.decode(setupyByteArray);
+      const setupString = decoder.decode(setupyByteArray);
 
       // extract values from both setups
-      let replayIntegers = ExtractIntegers(replayString);
-      let setupIntegers = ExtractIntegers(setupString);
+      const replayIntegers = ExtractIntegers(replayString);
+      const setupIntegers = ExtractIntegers(setupString);
 
       // check if number of extracted values matches
-      if (replayIntegers.values.Count != setupIntegers.values.Count) {
+      if (replayIntegers.values.length != setupIntegers.values.length) {
         throw "Replay setup and provided setup have different structure";
       }
 
-      const test = Replace(
+      const replaced = Replace(
         replayByteArray,
         replayIntegers,
         setupIntegers,
@@ -58,31 +62,30 @@ export async function replaceSetup(
       );
 
       return {
-        data: returnArray,
+        data: replaced,
         message: errorMessage,
         failed: false,
       };
     }
 
     return {
-      data: returnArray,
+      data: new Uint8Array(0),
       message: errorMessage,
       failed: true,
     };
   } catch (error) {
     console.log(error);
     return {
-      data: null,
+      data: new Uint8Array(0),
       message: errorMessage,
       failed: true,
     };
   }
 }
 
-function ExtractIntegers(text: string) : ExtractedIntegersResult {
-
-  let extractedValuesList = [];
-  let indexes = [];
+function ExtractIntegers(text: string): ExtractedIntegersResult {
+  const extractedValuesList = [];
+  const indexes = [];
   let tempString = "";
   let indexStart = -1;
 
@@ -114,8 +117,13 @@ function ExtractIntegers(text: string) : ExtractedIntegersResult {
   };
 }
 
-function Replace(replayByteArray: Uint8Array, replayIntegers:ExtractedIntegersResult, setupIntegers:ExtractedIntegersResult, setupIndexes:findSetupIndexResult) : Uint8Array{
-  let encoder = new TextEncoder();
+function Replace(
+  replayByteArray: Uint8Array,
+  replayIntegers: ExtractedIntegersResult,
+  setupIntegers: ExtractedIntegersResult,
+  setupIndexes: findSetupIndexResult
+): Uint8Array {
+  const encoder = new TextEncoder();
   // iterate through values extracted from replay file
   for (let i = 0; i < replayIntegers.values.length; i++) {
     // if value should be changed (because it differs from the provided setup value)
@@ -151,7 +159,6 @@ function Replace(replayByteArray: Uint8Array, replayIntegers:ExtractedIntegersRe
   }
   return replayByteArray;
 }
-
 
 interface ExtractedIntegersResult {
   values: string[];

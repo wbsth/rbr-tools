@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { watch, computed, ref } from "vue";
-import { extractSetup, type ExtractionResult } from "../tools/extractor.js";
+import { extractSetup } from "../tools/extractor.js";
+import type { FileOperationResult } from "@/tools/misc";
 import { fileSave, type FileWithHandle } from "browser-fs-access";
 
 const props = defineProps<{
   file: FileWithHandle;
 }>();
 
-const extractResult = ref<ExtractionResult>();
+const extractResult = ref<FileOperationResult>();
 
 const canShowDownloadButton = computed(() => {
   return extractResult.value?.message != null

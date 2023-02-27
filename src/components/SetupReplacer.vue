@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { reactive } from "vue";
-import { replaceSetup } from "../tools/replacer.js;
+import { ref } from "vue";
+import { replaceSetup } from "@/tools/replacer";
 import { fileSave, type FileWithHandle } from "browser-fs-access";
 
 const props = defineProps<{
@@ -8,11 +8,11 @@ const props = defineProps<{
   setupFile: FileWithHandle;
 }>();
 
-const replaceResult = reactive({});
+const replaceResult = ref();
 
 async function replace() {
-  let res = await replaceSetup(props.replayFile, props.setupFile);
-  Object.assign(replaceResult, res);
+  const res = await replaceSetup(props.replayFile, props.setupFile);
+  replaceResult.value = res;
 }
 
 async function saveToDisk() {
@@ -21,7 +21,7 @@ async function saveToDisk() {
       0,
       props.replayFile.name.lastIndexOf(".")
     ) || props.replayFile.name;
-  var blob = new Blob([replaceResult.data], { type: "example/binary" });
+  var blob = new Blob([replaceResult.value.data], { type: "example/binary" });
 
   await fileSave(blob, {
     fileName: fileName + "_copy",
