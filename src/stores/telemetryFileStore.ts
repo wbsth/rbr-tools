@@ -1,96 +1,145 @@
 import { defineStore } from "pinia";
 import { computed, ref, watch } from "vue";
-import chartTypes from "../data/chartTypes";
+import { availableCharts, availableXAxisTypes } from "@/data/chartTypes";
 
-export enum xAxisUnit {
-  distance,
-  time,
-}
+// export enum xAxisType {
+//   distance,
+//   time,
+// }
 
 interface IFile {
   id: number;
+  data: string[];
 }
 
-interface ISettings {
+interface IFileSettings {
   active: boolean;
   name: string;
   color: string;
 }
 
+interface IChartSettings {
+  chartId: number;
+  xAxis: "raceTime";
+  xUnit: "s";
+  xLabel: "Time";
+  yAxis: string;
+  yUnit: string;
+  yLabel: string;
+}
+
+interface IChartMaterials {
+  xUnit: string;
+  yUnit: string;
+  xLabel: string;
+  yLabel: string;
+  settings: IFileSettings;
+}
+
 export const telemetryFileStore = defineStore("telemetryFileStore", () => {
   const telemetrySettings = ref({
-    xAxisMode: xAxisUnit.distance,
+    xAxisMode: "raceTime",
   });
 
-  const files = ref<Record<number, IFile>>();
+  const files = ref(new Map<number, IFile>());
 
-  const filesSettings = ref({});
+  const filesSettings = ref(new Map<number, IFileSettings>());
 
-  const chartMaterials = ref({});
+  const chartMaterials = ref(new Map<number, IChartMaterials>());
 
   const newFileId = computed(() => {
-    const idValues = Object.values(files.value).map((x) => x.id);
-    if (idValues.length == 0) return 0;
-    return Math.max(...idValues) + 1;
+    if (files.value == undefined) {
+      return 0;
+    }
+    const valuesArray = Array.from(files.value.values());
+    const idValuesArray = valuesArray.map((x) => x.id);
+
+    if (idValuesArray.length == 0) return 0;
+
+    return Math.max(...idValuesArray) + 1;
   });
 
-  function addNewFile(file: IFile, options: ISettings) {
+  function addNewFile(file: IFile, options: IFileSettings) {
     file.id = newFileId.value;
 
-    files.value[file.id] = file;
-    filesSettings.value[file.id] = options;
+    files.value?.set(file.id, file);
+    filesSettings.value?.set(file.id, options);
 
     reloadCharts();
   }
 
   function deleteFile(file: IFile) {
-    delete files.value[file.id];
-    delete filesSettings.value[file.id];
+    files.value?.delete(file.id);
+    filesSettings.value?.delete(file.id);
 
     reloadCharts();
   }
 
   function toggleActiveState(file: IFile) {
-    filesSettings.value[file.id].active = !filesSettings.value[file.id].active;
+    const fileToModify = filesSettings.value.get(file.id);
+    if (fileToModify != undefined) {
+      fileToModify.active = !fileToModify.active;
+    }
   }
 
-  function changeColor(file: IFile, color: String) {
-    filesSettings.value[file.id].color = color;
+  function changeColor(file: IFile, color: string) {
+    const fileToModify = filesSettings.value.get(file.id);
+    if (fileToModify != undefined) {
+      fileToModify.color = color;
+    }
 
-    const keys = Object.keys(chartMaterials.value);
-    keys.forEach((element) => {
-      const f = chartMaterials.value[element];
-      const serieToUpdate = f.chartData.series.filter(
-        (x) => x.fileId == file.id
-      );
-      serieToUpdate[0].color = color;
-    });
+    // TODO DOKONCZYC
+
+    // const keys = Object.keys(chartMaterials.value);
+    // keys.forEach((element) => {
+    //   const f = chartMaterials.value[element];
+    //   const serieToUpdate = f.chartData.series.filter(
+    //     (x) => x.fileId == file.id
+    //   );
+    //   serieToUpdate[0].color = color;
+    // });
   }
 
-  function prepareChartData(settings: ISettings) {
-    const xAxisSettings = chartTypes.xAxis.filter(
-      (x) => x.id == telemetrySettings.value.xAxisMode
+  function prepareChartData(settings: IChartSettings) {
+    const xAxisSettings = availableXAxisTypes.filter(
+      (x) => x.fileColumnName == telemetrySettings.value.xAxisMode
     )[0];
 
-    const extractedData = Object.values(files.value).map((file) => {
-      let preparedData = file.data.map((f) => [
-        parseFloat(f[xAxisSettings.xAxis]),
-        parseFloat(f[settings.yAxis]),
-      ]);
+    const filesArray = Array.from(files.value.values());
+    filesArray.map((file) => {
+      const preparedData = file.data.map((f) =>{
+        [
+          parseFloat(f[xAxisSettings.fileColumnName]), 
+          parseFloat(f[settings.yAxis])
+        ]
+      });
 
       const filteredData = preparedData.filter(
-        (x) => !isNaN(x[0]) && !isNaN(x[1])
+        pd => {
+          !isNaN(pd[0]) && !isNaN(pd[1])
+        }
       );
 
-      const sortedData = filteredData.sort((x) => x[0]);
+    });
+    // const extractedData = Object.values(files.value).map((file) => {
+    //   let preparedData = file.data.map((f) => [
+    //     parseFloat(f[xAxisSettings.xAxis]),
+    //     parseFloat(f[settings.yAxis]),
+    //   ]);
 
-      return {
-        data: sortedData,
-        lineWidth: 1,
-        name: filesSettings.value[file.id].name,
-        color: filesSettings.value[file.id].color,
-        fileId: file.id,
-      };
+    //   const filteredData = preparedData.filter(
+    //     (x) => !isNaN(x[0]) && !isNaN(x[1])
+    //   );
+
+    //   const sortedData = filteredData.sort((x) => x[0]);
+
+    //   return {
+    //     data: sortedData,
+    //     lineWidth: 1,
+    //     name: filesSettings.value[file.id].name,
+    //     color: filesSettings.value[file.id].color,
+    //     fileId: file.id,
+    //   };
     });
 
     chartMaterials.value[settings.chartId] = {
@@ -136,11 +185,8 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
   }
 
   function reloadCharts() {
-    const keys = Object.keys(chartMaterials.value);
-    keys.forEach((key) => {
-      const settings = {};
-      Object.assign(settings, chartMaterials.value[key].settings);
-      prepareChartData(settings); //chartMaterials.value[key] = prepareChartData(chartMaterials.value[key].settings);
+    chartMaterials.value.forEach((x) => {
+      prepareChartData(x.settings);
     });
   }
 

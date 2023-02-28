@@ -1,132 +1,137 @@
-export default {
-  charts: [
-    {
-      id: 1,
-      label: "Speed",
-      columnName: "speed",
-      unit: "km/h",
-    },
-    {
-      id: 2,
-      label: "Engine RPM",
-      columnName: "engineRotation",
-      unit: "rpm",
-    },
-    {
-      id: 3,
-      label: "Steering",
-      columnName: "steering",
-      unit: "-",
-    },
-    {
-      id: 4,
-      label: "Throttle",
-      columnName: "throttle",
-      unit: "-",
-    },
-    {
-      id: 5,
-      label: "Brake",
-      columnName: "brake",
-      unit: "-",
-    },
-    {
-      id: 6,
-      label: "Clutch",
-      columnName: "clutch",
-      unit: "-",
-    },
-    {
-      id: 7,
-      label: "Brake pressure",
-      columnName: "footbrakePressure",
-      unit: "TBD",
-    },
-    {
-      id: 8,
-      label: "Handbrake pressure",
-      columnName: "handbrakePressure",
-      unit: "TBD",
-    },
-    {
-      id: 9,
-      label: "Radiator Coolant Temperature",
-      columnName: "radiatorCoolantHeatState.temperature",
-      unit: "K",
-    },
-    {
-      id: 10,
-      label: "Engine Coolant Temperature",
-      columnName: "engineCoolantHeatState.temperature",
-      unit: "K",
-    },
-    {
-      id: 11,
-      label: "Engine Temperature",
-      columnName: "engineTemperature",
-      unit: "K",
-    },
-    {
-      id: 12,
-      label: "LF Tire Temperature",
-      columnName: "LF.temperature",
-      unit: "K",
-    },
-    {
-      id: 13,
-      label: "LF Tire Pressure",
-      columnName: "LF.pressure",
-      unit: "-",
-    },
-    {
-      id: 14,
-      label: "RF Tire Temperature",
-      columnName: "RF.temperature",
-      unit: "K",
-    },
-    {
-      id: 15,
-      label: "RF Tire Pressure",
-      columnName: "RF.pressure",
-      unit: "-",
-    },
-    {
-      id: 16,
-      label: "LB Tire Temperature",
-      columnName: "LB.temperature",
-      unit: "K",
-    },
-    {
-      id: 17,
-      label: "LB Tire Pressure",
-      columnName: "LB.pressure",
-      unit: "-",
-    },
-    {
-      id: 18,
-      label: "RB Tire Temperature",
-      columnName: "RB.temperature",
-      unit: "K",
-    },
-    {
-      id: 19,
-      label: "RB Tire Pressure",
-      columnName: "RB.pressure",
-      unit: "-",
-    },
-  ],
-  xAxis: [
-    {
-      id: 0,
-      xAxis: "driveLineLocation",
-      xUnit: "m",
-      xLabel: "Driveline Distance",
-    },
-    {
-      id: 1,
-      xAxis: "raceTime",
-      xUnit: "s",
-      xLabel: "Time",
-    },
-  ],
-};
+enum EUnit {
+  KMH = "Km/h",
+  RPM = "RPM",
+  KELVIN = "°K",
+  CELCIUS = "°C",
+  NONE = "-",
+  METERS = "m",
+  SECONDS = "s",
+}
+
+interface IAvailableChart {
+  label: string;
+  fileColumnName: string;
+  unit: EUnit;
+}
+
+interface IAvailableAxisType {
+  label: string;
+  unit: EUnit;
+  fileColumnName: string;
+}
+
+export const availableCharts: IAvailableChart[] = [
+  {
+    label: "Speed",
+    fileColumnName: "speed",
+    unit: EUnit.KMH,
+  },
+  {
+    label: "Speed",
+    fileColumnName: "speed",
+    unit: EUnit.KMH,
+  },
+  {
+    label: "Engine RPM",
+    fileColumnName: "engineRotation",
+    unit: EUnit.RPM,
+  },
+  {
+    label: "Steering",
+    fileColumnName: "steering",
+    unit: EUnit.NONE,
+  },
+  {
+    label: "Throttle",
+    fileColumnName: "throttle",
+    unit: EUnit.NONE,
+  },
+  {
+    label: "Brake",
+    fileColumnName: "brake",
+    unit: EUnit.NONE,
+  },
+  {
+    label: "Clutch",
+    fileColumnName: "clutch",
+    unit: EUnit.NONE,
+  },
+  {
+    label: "Brake pressure",
+    fileColumnName: "footbrakePressure",
+    unit: EUnit.NONE,
+  },
+  {
+    label: "Handbrake pressure",
+    fileColumnName: "handbrakePressure",
+    unit: EUnit.NONE,
+  },
+  {
+    label: "Radiator Coolant Temperature",
+    fileColumnName: "radiatorCoolantHeatState.temperature",
+    unit: EUnit.KELVIN,
+  },
+  {
+    label: "Engine Coolant Temperature",
+    fileColumnName: "engineCoolantHeatState.temperature",
+    unit: EUnit.KELVIN,
+  },
+  {
+    label: "Engine Temperature",
+    fileColumnName: "engineTemperature",
+    unit: EUnit.KELVIN,
+  },
+  {
+    label: "LF Tire Temperature",
+    fileColumnName: "LF.temperature",
+    unit: EUnit.KELVIN,
+  },
+  {
+    label: "LF Tire Pressure",
+    fileColumnName: "LF.pressure",
+    unit: EUnit.NONE,
+  },
+  {
+    label: "RF Tire Temperature",
+    fileColumnName: "RF.temperature",
+    unit: EUnit.KELVIN,
+  },
+  {
+    label: "RF Tire Pressure",
+    fileColumnName: "RF.pressure",
+    unit: EUnit.NONE,
+  },
+  {
+    label: "LB Tire Temperature",
+    fileColumnName: "LB.temperature",
+    unit: EUnit.KELVIN,
+  },
+  {
+    label: "LB Tire Pressure",
+    fileColumnName: "LB.pressure",
+    unit: EUnit.NONE,
+  },
+  {
+    label: "RB Tire Temperature",
+    fileColumnName: "RB.temperature",
+    unit: EUnit.KELVIN,
+  },
+  {
+    label: "RB Tire Pressure",
+    fileColumnName: "RB.pressure",
+    unit: EUnit.NONE,
+  },
+];
+
+export const availableXAxisTypes: IAvailableAxisType[] = [
+  {
+    fileColumnName: "driveLineLocation",
+    unit: EUnit.METERS,
+    label: "Driveline Distance",
+  },
+  {
+    fileColumnName: "raceTime",
+    unit: EUnit.SECONDS,
+    label: "Time",
+  },
+];

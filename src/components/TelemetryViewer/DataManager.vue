@@ -1,5 +1,5 @@
-<script setup>
-import Papa from "papaparse";
+<script setup lang="ts">
+import { parse } from "papaparse";
 import { fileOpen, supported } from "browser-fs-access";
 
 import DataManagerRow from "./DataManagerRow.vue";
@@ -18,13 +18,14 @@ async function LoadData() {
 
   let rawFile = null;
 
-  Papa.parse(file, {
+  parse(file, {
     header: true,
     complete: function (results) {
       rawFile = results.data;
       const newColor = colors.colors[addedFilesCount];
 
       const newFile = {
+        id: 0,
         data: rawFile,
       };
 
@@ -52,9 +53,9 @@ async function LoadData() {
   <div class="flex flex-col gap-1">
     <DataManagerRow
       v-for="file in fileStore.files"
-      :key="file.id"
+      :key="file[0]"
       :telemetry-file="file"
-      :file-settings="fileStore.filesSettings[file.id]"
+      :file-settings="fileStore.filesSettings[file[0]]"
       @delete-row="fileStore.deleteFile"
       @toggle-active-state="fileStore.toggleActiveState"
       @change-color="fileStore.changeColor" />
