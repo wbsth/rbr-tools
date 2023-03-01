@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { parse } from "papaparse";
+import type { ParseResult } from "papaparse";
 import { fileOpen, supported } from "browser-fs-access";
 
 import DataManagerRow from "./DataManagerRow.vue";
 import { telemetryFileStore } from "../../stores/telemetryFileStore.js";
+import type { ITelemetryRawData } from "@/data/chartTypes";
 
 import colors from "../../data/colors";
 
@@ -20,7 +22,7 @@ async function LoadData() {
 
   parse(file, {
     header: true,
-    complete: function (results) {
+    complete: function (results: ParseResult<ITelemetryRawData>) {
       rawFile = results.data;
       const newColor = colors.colors[addedFilesCount];
 
@@ -55,7 +57,7 @@ async function LoadData() {
       v-for="file in fileStore.files"
       :key="file[0]"
       :telemetry-file="file"
-      :file-settings="fileStore.filesSettings[file[0]]"
+      :file-settings="fileStore.filesSettings.get(file[0])"
       @delete-row="fileStore.deleteFile"
       @toggle-active-state="fileStore.toggleActiveState"
       @change-color="fileStore.changeColor" />

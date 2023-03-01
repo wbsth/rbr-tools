@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref, watch } from "vue";
 import { availableCharts, availableXAxisTypes } from "@/data/chartTypes";
+import { ITelemetryRawData } from "@/data/chartTypes";
 
 // export enum xAxisType {
 //   distance,
@@ -9,7 +10,7 @@ import { availableCharts, availableXAxisTypes } from "@/data/chartTypes";
 
 interface IFile {
   id: number;
-  data: string[];
+  data: ITelemetryRawData[];
 }
 
 interface IFileSettings {
@@ -106,20 +107,22 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
     )[0];
 
     const filesArray = Array.from(files.value.values());
+
     filesArray.map((file) => {
-      const preparedData = file.data.map((f) =>{
+      const test = file.data;
+      const nameToAccess = xAxisSettings.fileColumnName;
+      test[0][nameToAccess];
+
+      const preparedData = file.data.map((rawData) => {
         [
-          parseFloat(f[xAxisSettings.fileColumnName]), 
-          parseFloat(f[settings.yAxis])
-        ]
+          parseFloat(rawData[xAxisSettings.fileColumnName]),
+          parseFloat(rawData[settings.yAxis]),
+        ];
       });
 
-      const filteredData = preparedData.filter(
-        pd => {
-          !isNaN(pd[0]) && !isNaN(pd[1])
-        }
-      );
-
+      const filteredData = preparedData.filter((pd) => {
+        !isNaN(pd[0]) && !isNaN(pd[1]);
+      });
     });
     // const extractedData = Object.values(files.value).map((file) => {
     //   let preparedData = file.data.map((f) => [
@@ -140,7 +143,7 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
     //     color: filesSettings.value[file.id].color,
     //     fileId: file.id,
     //   };
-    });
+    // });
 
     chartMaterials.value[settings.chartId] = {
       chartData: {
