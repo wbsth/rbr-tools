@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import DataManager from "../components/TelemetryViewer/DataManager.vue";
 import GridManager from "../components/TelemetryViewer/GridManager.vue";
 import TelemetrySettingsBar from "../components/TelemetryViewer/TelemetrySettingsBar.vue";

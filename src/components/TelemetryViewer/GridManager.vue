@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
 
 import { GridStack } from "gridstack";

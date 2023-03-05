@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
+    "@types/d3-dsv": "^3.0.1",
     "@types/node": "^18.14.1",
     "@types/papaparse": "^5.3.7",
     "@vitejs/plugin-vue": "^4.0.0",

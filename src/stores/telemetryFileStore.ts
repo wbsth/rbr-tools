@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
 import { computed, ref, watch } from "vue";
-import { availableCharts, availableXAxisTypes } from "@/data/chartTypes";
-import { ITelemetryRawData } from "@/data/chartTypes";
-
-// export enum xAxisType {
-//   distance,
-//   time,
-// }
+import {
+  availableCharts,
+  availableXAxisTypes,
+  type IAvailableChart,
+  type IAvailableAxisType,
+} from "@/data/chartTypes";
+import type { ITelemetryRawData } from "@/data/chartTypes";
 
 interface IFile {
   id: number;
@@ -21,25 +21,31 @@ interface IFileSettings {
 
 interface IChartSettings {
   chartId: number;
-  xAxis: "raceTime";
-  xUnit: "s";
-  xLabel: "Time";
-  yAxis: string;
-  yUnit: string;
-  yLabel: string;
+  // xAxis: "raceTime";
+  // xUnit: "s";
+  // xLabel: "Time";
+  ySettings: IAvailableChart;
+  // yAxis: keyof IAvailableChart;
+  // yUnit: string;
+  // yLabel: string;
 }
 
 interface IChartMaterials {
+  chartData: Highcharts.Options;
   xUnit: string;
   yUnit: string;
   xLabel: string;
   yLabel: string;
-  settings: IFileSettings;
+  settings: IChartSettings;
+}
+
+interface ITelemetrySettings {
+  xAxis: IAvailableAxisType;
 }
 
 export const telemetryFileStore = defineStore("telemetryFileStore", () => {
-  const telemetrySettings = ref({
-    xAxisMode: "raceTime",
+  const telemetrySettings = ref<ITelemetrySettings>({
+    xAxis: availableXAxisTypes[0],
   });
 
   const files = ref(new Map<number, IFile>());
@@ -85,12 +91,22 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
 
   function changeColor(file: IFile, color: string) {
     const fileToModify = filesSettings.value.get(file.id);
+
     if (fileToModify != undefined) {
       fileToModify.color = color;
     }
 
     // TODO DOKONCZYC
-
+    // chartMaterials.value.keys.forEach
+    chartMaterials.value.forEach((material, index) => {
+      const f = chartMaterials.value.get(index);
+      if (f != undefined && f.chartData.series) {
+        const serieToUpdate = f.chartData.series.filter(
+          (x) => x.fileId == file.id
+        );
+        serieToUpdate[0].color = color;
+      }
+    });
     // const keys = Object.keys(chartMaterials.value);
     // keys.forEach((element) => {
     //   const f = chartMaterials.value[element];
@@ -102,23 +118,30 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
   }
 
   function prepareChartData(settings: IChartSettings) {
-    const xAxisSettings = availableXAxisTypes.filter(
-      (x) => x.fileColumnName == telemetrySettings.value.xAxisMode
-    )[0];
+    const xAxisSettings = telemetrySettings.value.xAxis;
 
     const filesArray = Array.from(files.value.values());
 
-    filesArray.map((file) => {
-      const test = file.data;
-      const nameToAccess = xAxisSettings.fileColumnName;
-      test[0][nameToAccess];
+    const xAxisKey = xAxisSettings.fileColumnName as keyof ITelemetryRawData;
+    const yAxisKey = settings.ySettings
+      .fileColumnName as keyof ITelemetryRawData;
 
-      const preparedData = file.data.map((rawData) => {
-        [
-          parseFloat(rawData[xAxisSettings.fileColumnName]),
-          parseFloat(rawData[settings.yAxis]),
-        ];
-      });
+    filesArray.map((file) => {
+      const preparedData = file.data.map(
+        (rawData) =>
+          function () {
+            const preparedData = [
+              parseFloat(rawData[xAxisKey] as string),
+              parseFloat(rawData[yAxisKey] as string),
+            ];
+
+            const filteredData = preparedData.filter((fd) => {
+              return true;
+            });
+
+            return filteredData;
+          }
+      );
 
       const filteredData = preparedData.filter((pd) => {
         !isNaN(pd[0]) && !isNaN(pd[1]);
@@ -145,46 +168,48 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
     //   };
     // });
 
-    chartMaterials.value[settings.chartId] = {
-      chartData: {
-        chart: {
-          type: "line",
-          animation: false,
-          zoomType: "xy",
-        },
-        series: extractedData,
-        boost: {
-          enabled: true,
-          useGPUTranslations: true,
-        },
-        yAxis: {
-          title: {
-            text: `${settings.yLabel} [${settings.yUnit}]`,
-            style: {
-              fontSize: "14px",
-            },
-          },
-        },
-        xAxis: {
-          title: {
-            text: `${xAxisSettings.xLabel} [${xAxisSettings.xUnit}]`,
-            style: {
-              fontSize: "14px",
-            },
-          },
-          crosshair: true,
-        },
+    const chartDataToSet = {
+      chart: {
+        type: "line",
+        animation: false,
+        zoomType: "xy",
+      },
+      series: extractedData,
+      boost: {
+        enabled: true,
+        useGPUTranslations: true,
+      },
+      yAxis: {
         title: {
-          text: "",
-          margin: 5,
+          text: `${settings.ySettings.label} [${settings.ySettings.unit}]`,
+          style: {
+            fontSize: "14px",
+          },
         },
       },
-      xUnit: xAxisSettings.xUnit,
-      yUnit: settings.yUnit,
-      xLabel: xAxisSettings.xLabel,
-      yLabel: settings.yLabel,
-      settings: settings,
+      xAxis: {
+        title: {
+          text: `${xAxisSettings.label} [${xAxisSettings.unit}]`,
+          style: {
+            fontSize: "14px",
+          },
+        },
+        crosshair: true,
+      },
+      title: {
+        text: "",
+        margin: 5,
+      },
     };
+
+    chartMaterials.value.set(settings.chartId, {
+      chartData: chartDataToSet,
+      xUnit: xAxisSettings.unit,
+      yUnit: settings.ySettings.unit,
+      xLabel: xAxisSettings.label,
+      yLabel: settings.ySettings.label,
+      settings: settings,
+    });
   }
 
   function reloadCharts() {

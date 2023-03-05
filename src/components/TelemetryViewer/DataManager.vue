@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { parse } from "papaparse";
 import type { ParseResult } from "papaparse";
-import { fileOpen, supported } from "browser-fs-access";
+
+import { fileOpen } from "browser-fs-access";
 
 import DataManagerRow from "./DataManagerRow.vue";
-import { telemetryFileStore } from "../../stores/telemetryFileStore.js";
+import { telemetryFileStore } from "@/stores/telemetryFileStore.js";
 import type { ITelemetryRawData } from "@/data/chartTypes";
 
-import colors from "../../data/colors";
+import colors from "@/data/colors";
 
 const fileStore = telemetryFileStore();
 

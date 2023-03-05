@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
 
 import { VSwatches } from "vue3-swatches";
@@ -33,7 +33,7 @@ function toggleActiveState() {
   emit("toggleActiveState", props.telemetryFile);
 }
 
-function colorChanged(value) {
+function colorChanged(value: string) {
   emit("changeColor", props.telemetryFile, value);
 }
 

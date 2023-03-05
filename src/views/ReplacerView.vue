@@ -3,7 +3,6 @@ import { ref } from "vue";
 import SetupReplacer from "../components/SetupReplacer.vue";
 import { fileOpen, type FileWithHandle } from "browser-fs-access";
 
-// const fileData = reactive({ setupFile: null, replayFile: null });
 const setupFile = ref<FileWithHandle>();
 const replayFile = ref<FileWithHandle>();
 

@@ -1,8 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { ref, watch } from "vue";
 import ScatterChart from "./ScatterChart.vue";
 
-import chartTypes from "../../data/chartTypes";
+import { availableCharts } from "../../data/chartTypes";
+import type { IAvailableChart } from "../../data/chartTypes";
+
 import { telemetryFileStore } from "../../stores/telemetryFileStore";
 
 const props = defineProps({
@@ -19,18 +21,20 @@ function deleteThisWidget() {
   emit("delete", props.data);
 }
 
-const selectedChartType = ref({});
+const selectedChartType = ref<IAvailableChart>();
 
 watch(selectedChartType, () => {
-  store.prepareChartData({
-    chartId: props.data.id,
-    xAxis: "raceTime",
-    xUnit: "s",
-    xLabel: "Time",
-    yAxis: selectedChartType.value.columnName,
-    yUnit: selectedChartType.value.unit,
-    yLabel: selectedChartType.value.label,
-  });
+  if (selectedChartType.value) {
+    store.prepareChartData({
+      chartId: props.data.id,
+      // xAxis: "raceTime",
+      // xUnit: "s",
+      // xLabel: "Time",
+      yAxis: selectedChartType.value?.fileColumnName,
+      yUnit: selectedChartType.value?.unit,
+      yLabel: selectedChartType.value?.label,
+    });
+  }
 });
 </script>
 
@@ -52,8 +56,8 @@ watch(selectedChartType, () => {
             name="cars"
             class="border text-sm rounded-sm block w-64 p-1 bg-neutral-800 border-gray-900 placeholder-gray-400 text-white focus:border-neutral-600 focus:ring-neutral-600">
             <option
-              v-for="chart in chartTypes.charts"
-              :key="chart.id"
+              v-for="chart in availableCharts"
+              :key="chart.fileColumnName"
               :value="chart">
               {{ chart.label }}
             </option>
