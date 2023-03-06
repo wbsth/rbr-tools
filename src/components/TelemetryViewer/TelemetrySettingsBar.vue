@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { telemetryFileStore, xAxisType } from "@/stores/telemetryFileStore";
+import { telemetryFileStore } from "@/stores/telemetryFileStore";
+import { availableXAxisTypes } from "@/data/chartTypes";
 
 const store = telemetryFileStore();
 
@@ -8,16 +9,16 @@ const distanceActive = ref(true);
 
 function distanceClicked() {
   distanceActive.value = true;
-  if (store.telemetrySettings.xAxisMode != xAxisType.distance) {
-    store.telemetrySettings.xAxisMode = xAxisType.distance;
+  if (store.telemetrySettings.xAxis != availableXAxisTypes[0]) {
+    store.telemetrySettings.xAxis = availableXAxisTypes[0];
     store.reloadCharts();
   }
 }
 
 function timeClicked() {
   distanceActive.value = false;
-  if (store.telemetrySettings.xAxisMode != xAxisType.time) {
-    store.telemetrySettings.xAxisMode = xAxisType.time;
+  if (store.telemetrySettings.xAxis != availableXAxisTypes[0]) {
+    store.telemetrySettings.xAxis = availableXAxisTypes[1];
     store.reloadCharts();
   }
 }

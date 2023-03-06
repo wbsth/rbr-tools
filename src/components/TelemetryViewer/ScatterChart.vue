@@ -28,28 +28,25 @@ const props = defineProps({
   },
 });
 
-const lineChart = ref({});
+const lineChart = ref();
 
 watch(props.filesSettings, () => {
-  if (!lineChart.value.chart) {
-    return;
-  }
-
-  const keys = Object.keys(lineChart.value.chart.series);
-  keys.forEach((element) => {
-    const f = lineChart.value.chart.series[element];
-
-    if (!props.filesSettings[f.options.fileId]) {
-      return;
-    }
-
-    const visibilityToSet = props.filesSettings[f.options.fileId].active;
-    if (visibilityToSet) {
-      f.show();
-    } else {
-      f.hide();
-    }
-  });
+  // if (!lineChart.value.chart) {
+  //   return;
+  // }
+  // const keys = Object.keys(lineChart.value.chart.series);
+  // keys.forEach((element) => {
+  //   const f = lineChart.value.chart.series[element];
+  //   if (!props.filesSettings[f.options.fileId]) {
+  //     return;
+  //   }
+  //   const visibilityToSet = props.filesSettings[f.options.fileId].active;
+  //   if (visibilityToSet) {
+  //     f.show();
+  //   } else {
+  //     f.hide();
+  //   }
+  // });
 });
 
 function handleResize() {

@@ -7,6 +7,7 @@ import {
   type IAvailableAxisType,
 } from "@/data/chartTypes";
 import type { ITelemetryRawData } from "@/data/chartTypes";
+import type { SeriesOptionsType } from "highcharts";
 
 interface IFile {
   id: number;
@@ -96,15 +97,13 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
       fileToModify.color = color;
     }
 
-    // TODO DOKONCZYC
-    // chartMaterials.value.keys.forEach
     chartMaterials.value.forEach((material, index) => {
       const f = chartMaterials.value.get(index);
       if (f != undefined && f.chartData.series) {
-        const serieToUpdate = f.chartData.series.filter(
-          (x) => x.fileId == file.id
-        );
-        serieToUpdate[0].color = color;
+        // const serieToUpdate = f.chartData.series.filter(
+        //   // (x) => x.fileId == file.id
+        // );
+        // serieToUpdate[0].color = color;
       }
     });
     // const keys = Object.keys(chartMaterials.value);
@@ -126,47 +125,37 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
     const yAxisKey = settings.ySettings
       .fileColumnName as keyof ITelemetryRawData;
 
-    filesArray.map((file) => {
-      const preparedData = file.data.map(
-        (rawData) =>
-          function () {
-            const preparedData = [
-              parseFloat(rawData[xAxisKey] as string),
-              parseFloat(rawData[yAxisKey] as string),
-            ];
+    const extractedData = filesArray.map(function (file) {
+      // for each file
+      const preparedData = file.data.map(function (rawData) {
+        // for each data row in file
+        const data: number[] = [
+          parseFloat(rawData[xAxisKey] as string),
+          parseFloat(rawData[yAxisKey] as string),
+        ];
 
-            const filteredData = preparedData.filter((fd) => {
-              return true;
-            });
-
-            return filteredData;
-          }
-      );
+        return data;
+      });
 
       const filteredData = preparedData.filter((pd) => {
-        !isNaN(pd[0]) && !isNaN(pd[1]);
+        return !isNaN(pd[0]) && !isNaN(pd[1]);
       });
+
+      const sortedData = filteredData.sort((x) => x[0]);
+
+      const tempName = filesSettings.value.get(file.id)?.name ?? "?";
+      const tempColor = filesSettings.value.get(file.id)?.color ?? "#FFFFFF";
+
+      const returnObject: SeriesOptionsType = {
+        data: sortedData,
+        lineWidth: 1,
+        name: tempName,
+        color: tempColor,
+        type: "line",
+      };
+
+      return returnObject;
     });
-    // const extractedData = Object.values(files.value).map((file) => {
-    //   let preparedData = file.data.map((f) => [
-    //     parseFloat(f[xAxisSettings.xAxis]),
-    //     parseFloat(f[settings.yAxis]),
-    //   ]);
-
-    //   const filteredData = preparedData.filter(
-    //     (x) => !isNaN(x[0]) && !isNaN(x[1])
-    //   );
-
-    //   const sortedData = filteredData.sort((x) => x[0]);
-
-    //   return {
-    //     data: sortedData,
-    //     lineWidth: 1,
-    //     name: filesSettings.value[file.id].name,
-    //     color: filesSettings.value[file.id].color,
-    //     fileId: file.id,
-    //   };
-    // });
 
     const chartDataToSet = {
       chart: {
