@@ -27,12 +27,13 @@ watch(selectedChartType, () => {
   if (selectedChartType.value) {
     store.prepareChartData({
       chartId: props.data.id,
-      // xAxis: "raceTime",
-      // xUnit: "s",
-      // xLabel: "Time",
-      yAxis: selectedChartType.value?.fileColumnName,
-      yUnit: selectedChartType.value?.unit,
-      yLabel: selectedChartType.value?.label,
+      ySettings: selectedChartType.value,
+      // // xAxis: "raceTime",
+      // // xUnit: "s",
+      // // xLabel: "Time",
+      // yAxis: selectedChartType.value?.fileColumnName,
+      // yUnit: selectedChartType.value?.unit,
+      // yLabel: selectedChartType.value?.label,
     });
   }
 });
@@ -43,10 +44,10 @@ watch(selectedChartType, () => {
     :id="data.id"
     :key="data.id"
     :gs-id="data.id"
-    :gs-x="data.grid.x"
-    :gs-y="data.grid.y"
-    :gs-w="data.grid.w"
-    :gs-h="data.grid.h">
+    :gs-x="data.x"
+    :gs-y="data.y"
+    :gs-w="data.w"
+    :gs-h="data.h">
     <div class="bg-neutral-700 grid-stack-item-content flex flex-col">
       <div
         class="grid grid-cols-2 bg-neutral-900 px-2 py-1 no-drag drag-target">
@@ -71,17 +72,17 @@ watch(selectedChartType, () => {
         </div>
       </div>
       <div class="grow flex justify-center items-center overflow-hidden">
-        <p v-if="!store.chartMaterials[props.data.id]" class="italic">
+        <p v-if="!store.chartMaterials.get(props.data.id)" class="italic">
           no data
         </p>
         <ScatterChart
           v-else
-          :chart-data="store.chartMaterials[data.id].chartData"
+          :chart-data="store.chartMaterials.get(data.id)?.chartData ?? {}"
           :files-settings="store.filesSettings"
-          :x-unit="store.chartMaterials[data.id].xUnit"
-          :y-unit="store.chartMaterials[data.id].yUnit"
-          :x-label="store.chartMaterials[data.id].xLabel"
-          :y-label="store.chartMaterials[data.id].yLabel" />
+          :x-unit="store.chartMaterials.get(data.id)?.xUnit"
+          :y-unit="store.chartMaterials.get(data.id)?.yUnit"
+          :x-label="store.chartMaterials.get(data.id)?.xLabel"
+          :y-label="store.chartMaterials.get(data.id)?.yLabel" />
       </div>
     </div>
   </div>

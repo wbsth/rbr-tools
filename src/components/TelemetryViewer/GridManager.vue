@@ -1,16 +1,30 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from "vue";
+import type { Ref } from "vue";
 
-import { GridStack } from "gridstack";
+import {
+  GridStack,
+  type GridStackElement,
+  type GridStackWidget,
+} from "gridstack";
 import "gridstack/dist/gridstack.min.css";
 import "gridstack/dist/gridstack-extra.min.css";
 import GridItem from "./GridItem.vue";
 
 // widgets grid
-let grid = null;
+const grid = ref<GridStack>();
+
+const widgets: Ref<GridStackWidget[]> = ref([
+  {
+    id: 1,
+    w: 1,
+    h: 4,
+  },
+]);
+const gridItems = ref([]);
 
 function initGridStack() {
-  grid = GridStack.init({
+  grid.value = GridStack.init({
     column: 1,
     cellHeight: 100,
     minRow: 1,
@@ -23,34 +37,40 @@ function initGridStack() {
       handle: ".drag-target",
     },
   });
-  makeWidgets(widgets.value);
+
+  if (widgets.value != undefined) {
+    makeWidgets(widgets.value);
+  }
 }
 
-function makeWidgets(widgets) {
+function makeWidgets(widgets: GridStackWidget[]) {
   widgets.forEach((widget) => {
     makeWidget(widget);
   });
 }
 
-function makeWidget(item) {
+function makeWidget(item: GridStackWidget) {
   const elementSelector = `#${item.id}`;
-  return grid.makeWidget(elementSelector);
+  return grid.value?.makeWidget(elementSelector);
 }
 
-function deleteWidget(widget) {
+function deleteWidget(widget: GridStackWidget) {
   const index = widgets.value.findIndex((w) => w.id === widget.id);
   if (index === -1) {
     return;
   }
-  const selector = `#${CSS.escape(widget.id)}`;
-  grid.removeWidget(selector);
+  const selector = `#${CSS.escape(widget.id?.toString() ?? "")}`;
+  grid.value?.removeWidget(selector);
   widgets.value.splice(index, 1);
-  grid.compact();
+  grid.value?.compact();
 }
 
 async function addWidget() {
   const ids = widgets.value.map((x) => x.id);
-  const newId = ids.length > 0 ? Math.max(...ids) + 1 : 0;
+  const idsFiltered = ids.filter(
+    (x) => x != undefined && parseInt(x.toString())
+  ) as number[];
+  const newId = ids.length > 0 ? Math.max(...idsFiltered) + 1 : 0;
 
   const widget = {
     id: newId,
@@ -63,18 +83,6 @@ async function addWidget() {
   await nextTick();
   makeWidget(widget);
 }
-
-const widgets = ref([
-  {
-    id: 1,
-    grid: {
-      w: 1,
-      h: 4,
-    },
-  },
-]);
-
-const gridItems = ref([]);
 
 onMounted(() => {
   initGridStack();
