@@ -57,7 +57,7 @@ async function LoadData() {
     <DataManagerRow
       v-for="file in fileStore.files"
       :key="file[0]"
-      :telemetry-file="file"
+      :telemetry-file="file[1]"
       :file-settings="fileStore.filesSettings.get(file[0])"
       @delete-row="fileStore.deleteFile"
       @toggle-active-state="fileStore.toggleActiveState"

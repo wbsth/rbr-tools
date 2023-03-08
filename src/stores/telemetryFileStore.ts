@@ -14,7 +14,7 @@ interface IFile {
   data: ITelemetryRawData[];
 }
 
-interface IFileSettings {
+export interface IFileSettings {
   active: boolean;
   name: string;
   color: string;
@@ -22,13 +22,7 @@ interface IFileSettings {
 
 interface IChartSettings {
   chartId: number;
-  // xAxis: "raceTime";
-  // xUnit: "s";
-  // xLabel: "Time";
   ySettings: IAvailableChart;
-  // yAxis: keyof IAvailableChart;
-  // yUnit: string;
-  // yLabel: string;
 }
 
 interface IChartMaterials {
@@ -43,6 +37,10 @@ interface IChartMaterials {
 interface ITelemetrySettings {
   xAxis: IAvailableAxisType;
 }
+
+type ExtendedSeriesOptionsType = SeriesOptionsType & {
+  fileId: number
+};
 
 export const telemetryFileStore = defineStore("telemetryFileStore", () => {
   const telemetrySettings = ref<ITelemetrySettings>({
@@ -69,7 +67,6 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
 
   function addNewFile(file: IFile, options: IFileSettings) {
     file.id = newFileId.value;
-
     files.value?.set(file.id, file);
     filesSettings.value?.set(file.id, options);
 
@@ -96,24 +93,16 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
     if (fileToModify != undefined) {
       fileToModify.color = color;
     }
-
     chartMaterials.value.forEach((material, index) => {
-      const f = chartMaterials.value.get(index);
-      if (f != undefined && f.chartData.series) {
-        // const serieToUpdate = f.chartData.series.filter(
-        //   // (x) => x.fileId == file.id
-        // );
-        // serieToUpdate[0].color = color;
+      if (material.chartData.series) {
+        const serieToUpdate = material.chartData.series.filter(
+          (x) => {
+          const xTemp = x as ExtendedSeriesOptionsType;
+          return xTemp.fileId == file.id;
+        });
+        serieToUpdate[0].color = color;
       }
     });
-    // const keys = Object.keys(chartMaterials.value);
-    // keys.forEach((element) => {
-    //   const f = chartMaterials.value[element];
-    //   const serieToUpdate = f.chartData.series.filter(
-    //     (x) => x.fileId == file.id
-    //   );
-    //   serieToUpdate[0].color = color;
-    // });
   }
 
   function prepareChartData(settings: IChartSettings) {
@@ -145,13 +134,13 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
 
       const tempName = filesSettings.value.get(file.id)?.name ?? "?";
       const tempColor = filesSettings.value.get(file.id)?.color ?? "#FFFFFF";
-
-      const returnObject: SeriesOptionsType = {
+      const returnObject: ExtendedSeriesOptionsType = {
         data: sortedData,
         lineWidth: 1,
         name: tempName,
         color: tempColor,
         type: "line",
+        fileId: file.id
       };
 
       return returnObject;
