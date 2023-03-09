@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
+import { inject } from "@vercel/analytics";
+inject();
 </script>
 
 <template>
