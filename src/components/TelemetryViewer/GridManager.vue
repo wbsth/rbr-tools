@@ -12,26 +12,26 @@ import "gridstack/dist/gridstack-extra.min.css";
 import GridItem from "./GridItem.vue";
 
 // widgets grid
-const grid = ref<GridStack>();
+let grid: GridStack;
+const widgetCount = ref(0);
 
 const widgets: Ref<GridStackWidget[]> = ref([
   {
-    id: 1,
+    id: 0,
     w: 1,
     h: 4,
+    x: 0,
+    y: 0,
   },
 ]);
 const gridItems = ref([]);
 
 function initGridStack() {
-  grid.value = GridStack.init({
+  grid = GridStack.init({
     column: 1,
     cellHeight: 100,
     minRow: 1,
-    marginTop: 5,
-    marginBottom: 5,
-    marginLeft: 5,
-    marginRight: 5,
+    margin: "5px 5px 5px 5px",
     disableOneColumnMode: true,
     draggable: {
       handle: ".drag-target",
@@ -51,7 +51,8 @@ function makeWidgets(widgets: GridStackWidget[]) {
 
 function makeWidget(item: GridStackWidget) {
   const elementSelector = `#${item.id}`;
-  return grid.value?.makeWidget(elementSelector);
+  console.log(item);
+  return grid.makeWidget(elementSelector);
 }
 
 function deleteWidget(widget: GridStackWidget) {
@@ -60,24 +61,24 @@ function deleteWidget(widget: GridStackWidget) {
     return;
   }
   const selector = `#${CSS.escape(widget.id?.toString() ?? "")}`;
-  grid.value?.removeWidget(selector);
+  grid.removeWidget(selector);
   widgets.value.splice(index, 1);
-  grid.value?.compact();
+  grid.compact();
 }
 
 async function addWidget() {
+  widgetCount.value += 1;
   const ids = widgets.value.map((x) => x.id);
   const idsFiltered = ids.filter(
     (x) => x != undefined && parseInt(x.toString())
   ) as number[];
+
   const newId = ids.length > 0 ? Math.max(...idsFiltered) + 1 : 0;
 
-  const widget = {
-    id: newId,
-    grid: {
-      w: 1,
-      h: 4,
-    },
+  const widget: GridStackWidget = {
+    id: widgetCount.value,
+    w: 1,
+    h: 4,
   };
   widgets.value.push(widget);
   await nextTick();
