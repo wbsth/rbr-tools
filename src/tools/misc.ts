@@ -1,9 +1,20 @@
-export function findSetupIndex(byteArray) {
+export interface FileOperationResult {
+  data: Uint8Array;
+  message: string;
+  failed: boolean;
+}
+
+export interface findSetupIndexResult {
+  start: number;
+  end: number;
+}
+
+export function findSetupIndex(byteArray: Uint8Array): findSetupIndexResult {
   const startBytes = [0x28, 0x28, 0x22];
   const endBytes = [0x29, 0x0a, 0x20, 0x29, 0x29];
   const maxSearchRange = byteArray.byteLength;
-  let currentStart = [];
-  let currentEnd = [];
+  const currentStart: number[] = [];
+  const currentEnd: number[] = [];
 
   let startIndex = 0;
   let endIndex = 0;
@@ -36,13 +47,13 @@ export function findSetupIndex(byteArray) {
   };
 }
 
-function isArrayEqual(a, b) {
+function isArrayEqual<T>(a: Array<T>, b: Array<T>): boolean {
   // If length is not equal
   if (a.length != b.length) {
-    return "False";
+    return false;
   } else {
     // Comparing each element of array
-    for (var i = 0; i < a.length; i++) {
+    for (let i = 0; i < a.length; i++) {
       if (a[i] != b[i]) {
         return false;
       }
@@ -51,18 +62,14 @@ function isArrayEqual(a, b) {
   }
 }
 
-export function isNumber(char) {
-  if (typeof char !== 'string') {
+export function isNumber(char: string): boolean {
+  if (char.trim() === "") {
     return false;
   }
-
-  if (char.trim() === '') {
-    return false;
-  }
-
-  return !isNaN(char);
+  const converted = Number(char);
+  return !isNaN(converted);
 }
 
-export function isCharacterALetter(char) {
-  return char.toLowerCase() != char.toUpperCase()
+export function isCharacterALetter(char: string): boolean {
+  return char.toLowerCase() != char.toUpperCase();
 }
