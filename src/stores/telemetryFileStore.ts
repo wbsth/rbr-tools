@@ -39,7 +39,7 @@ interface ITelemetrySettings {
 }
 
 type ExtendedSeriesOptionsType = SeriesOptionsType & {
-  fileId: number
+  fileId: number;
 };
 
 export const telemetryFileStore = defineStore("telemetryFileStore", () => {
@@ -95,8 +95,7 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
     }
     chartMaterials.value.forEach((material, index) => {
       if (material.chartData.series) {
-        const serieToUpdate = material.chartData.series.filter(
-          (x) => {
+        const serieToUpdate = material.chartData.series.filter((x) => {
           const xTemp = x as ExtendedSeriesOptionsType;
           return xTemp.fileId == file.id;
         });
@@ -114,14 +113,27 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
     const yAxisKey = settings.ySettings
       .fileColumnName as keyof ITelemetryRawData;
 
+    let unitAfterConversion: string = "";
+
+    if (settings.ySettings.conversionMethod != undefined) {
+      const test = settings.ySettings.conversionMethod(1);
+      unitAfterConversion = test.conversionUnit;
+    }
+
     const extractedData = filesArray.map(function (file) {
       // for each file
       const preparedData = file.data.map(function (rawData) {
         // for each data row in file
-        const data: number[] = [
+        let data: number[] = [
           parseFloat(rawData[xAxisKey] as string),
           parseFloat(rawData[yAxisKey] as string),
         ];
+
+        if (settings.ySettings.conversionMethod != undefined) {
+          data = data.map(
+            (x) => settings.ySettings.conversionMethod?.(x).conversionValue ?? 0
+          );
+        }
 
         return data;
       });
@@ -140,7 +152,7 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
         name: tempName,
         color: tempColor,
         type: "line",
-        fileId: file.id
+        fileId: file.id,
       };
 
       return returnObject;
@@ -159,7 +171,9 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
       },
       yAxis: {
         title: {
-          text: `${settings.ySettings.label} [${settings.ySettings.unit}]`,
+          text: `${settings.ySettings.label} [${
+            unitAfterConversion ?? settings.ySettings.unit
+          }]`,
           style: {
             fontSize: "14px",
           },
@@ -178,12 +192,17 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
         text: "",
         margin: 5,
       },
+      tooltip: {
+        animation: false,
+        headerFormat: `<span style="font-size: 10px;">{point.x:.2f}</span><br>`,
+        pointFormat: "{series.name}: <b>{point.y:.2f}</b>",
+      },
     };
 
     chartMaterials.value.set(settings.chartId, {
       chartData: chartDataToSet,
       xUnit: xAxisSettings.unit,
-      yUnit: settings.ySettings.unit,
+      yUnit: unitAfterConversion ?? settings.ySettings.unit,
       xLabel: xAxisSettings.label,
       yLabel: settings.ySettings.label,
       settings: settings,

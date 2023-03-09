@@ -14,6 +14,7 @@ export interface IAvailableChart {
   label: string;
   fileColumnName: keyof ITelemetryRawData;
   unit: EUnit;
+  conversionMethod?: (arg0: number) => ConversionResult;
 }
 
 export interface IAvailableAxisType {
@@ -190,11 +191,6 @@ export const availableCharts: IAvailableChart[] = [
     fileColumnName: "speed",
     unit: EUnit.KMH,
   },
-  // {
-  //   label: "Speed",
-  //   fileColumnName: "speed",
-  //   unit: EUnit.KMH,
-  // },
   {
     label: "Engine RPM",
     fileColumnName: "engineRotation",
@@ -234,21 +230,25 @@ export const availableCharts: IAvailableChart[] = [
     label: "Radiator Coolant Temperature",
     fileColumnName: "radiatorCoolantHeatState.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "Engine Coolant Temperature",
     fileColumnName: "engineCoolantHeatState.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "Engine Temperature",
     fileColumnName: "engineTemperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "LF Tire Temperature",
     fileColumnName: "LF.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "LF Tire Pressure",
@@ -259,6 +259,7 @@ export const availableCharts: IAvailableChart[] = [
     label: "RF Tire Temperature",
     fileColumnName: "RF.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "RF Tire Pressure",
@@ -269,6 +270,7 @@ export const availableCharts: IAvailableChart[] = [
     label: "LB Tire Temperature",
     fileColumnName: "LB.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "LB Tire Pressure",
@@ -279,6 +281,7 @@ export const availableCharts: IAvailableChart[] = [
     label: "RB Tire Temperature",
     fileColumnName: "RB.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "RB Tire Pressure",
@@ -286,6 +289,18 @@ export const availableCharts: IAvailableChart[] = [
     unit: EUnit.NONE,
   },
 ];
+
+interface ConversionResult {
+  conversionUnit: EUnit;
+  conversionValue: number;
+}
+
+function KelvinToCelcius(valueInKelvins: number): ConversionResult {
+  return {
+    conversionUnit: EUnit.CELCIUS,
+    conversionValue: valueInKelvins - 273.15,
+  };
+}
 
 export const availableXAxisTypes: IAvailableAxisType[] = [
   {
