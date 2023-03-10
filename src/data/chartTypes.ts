@@ -6,6 +6,8 @@ enum EUnit {
   NONE = "-",
   METERS = "m",
   SECONDS = "s",
+  PASCALS = "PA",
+  KILOPASCALS = "KPa",
 }
 
 // INTERFACES
@@ -14,6 +16,7 @@ export interface IAvailableChart {
   label: string;
   fileColumnName: keyof ITelemetryRawData;
   unit: EUnit;
+  conversionMethod?: (arg0: number) => ConversionResult;
 }
 
 export interface IAvailableAxisType {
@@ -190,11 +193,6 @@ export const availableCharts: IAvailableChart[] = [
     fileColumnName: "speed",
     unit: EUnit.KMH,
   },
-  // {
-  //   label: "Speed",
-  //   fileColumnName: "speed",
-  //   unit: EUnit.KMH,
-  // },
   {
     label: "Engine RPM",
     fileColumnName: "engineRotation",
@@ -234,58 +232,88 @@ export const availableCharts: IAvailableChart[] = [
     label: "Radiator Coolant Temperature",
     fileColumnName: "radiatorCoolantHeatState.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "Engine Coolant Temperature",
     fileColumnName: "engineCoolantHeatState.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "Engine Temperature",
     fileColumnName: "engineTemperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "LF Tire Temperature",
     fileColumnName: "LF.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "LF Tire Pressure",
     fileColumnName: "LF.pressure",
-    unit: EUnit.NONE,
+    unit: EUnit.PASCALS,
+    conversionMethod: PaToKPa,
   },
   {
     label: "RF Tire Temperature",
     fileColumnName: "RF.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "RF Tire Pressure",
     fileColumnName: "RF.pressure",
-    unit: EUnit.NONE,
+    unit: EUnit.PASCALS,
+    conversionMethod: PaToKPa,
   },
   {
     label: "LB Tire Temperature",
     fileColumnName: "LB.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "LB Tire Pressure",
     fileColumnName: "LB.pressure",
-    unit: EUnit.NONE,
+    unit: EUnit.PASCALS,
+    conversionMethod: PaToKPa,
   },
   {
     label: "RB Tire Temperature",
     fileColumnName: "RB.temperature",
     unit: EUnit.KELVIN,
+    conversionMethod: KelvinToCelcius,
   },
   {
     label: "RB Tire Pressure",
     fileColumnName: "RB.pressure",
-    unit: EUnit.NONE,
+    unit: EUnit.PASCALS,
+    conversionMethod: PaToKPa,
   },
 ];
+
+interface ConversionResult {
+  conversionUnit: EUnit;
+  conversionValue: number;
+}
+
+function KelvinToCelcius(valueInKelvins: number): ConversionResult {
+  return {
+    conversionUnit: EUnit.CELCIUS,
+    conversionValue: valueInKelvins - 273.15,
+  };
+}
+
+function PaToKPa(valueinPascals: number): ConversionResult {
+  return {
+    conversionUnit: EUnit.KILOPASCALS,
+    conversionValue: valueinPascals / 1000,
+  };
+}
 
 export const availableXAxisTypes: IAvailableAxisType[] = [
   {
