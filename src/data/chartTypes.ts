@@ -6,6 +6,8 @@ enum EUnit {
   NONE = "-",
   METERS = "m",
   SECONDS = "s",
+  PASCALS = "PA",
+  KILOPASCALS = "KPa",
 }
 
 // INTERFACES
@@ -253,7 +255,8 @@ export const availableCharts: IAvailableChart[] = [
   {
     label: "LF Tire Pressure",
     fileColumnName: "LF.pressure",
-    unit: EUnit.NONE,
+    unit: EUnit.PASCALS,
+    conversionMethod: PaToKPa,
   },
   {
     label: "RF Tire Temperature",
@@ -264,7 +267,8 @@ export const availableCharts: IAvailableChart[] = [
   {
     label: "RF Tire Pressure",
     fileColumnName: "RF.pressure",
-    unit: EUnit.NONE,
+    unit: EUnit.PASCALS,
+    conversionMethod: PaToKPa,
   },
   {
     label: "LB Tire Temperature",
@@ -275,7 +279,8 @@ export const availableCharts: IAvailableChart[] = [
   {
     label: "LB Tire Pressure",
     fileColumnName: "LB.pressure",
-    unit: EUnit.NONE,
+    unit: EUnit.PASCALS,
+    conversionMethod: PaToKPa,
   },
   {
     label: "RB Tire Temperature",
@@ -286,7 +291,8 @@ export const availableCharts: IAvailableChart[] = [
   {
     label: "RB Tire Pressure",
     fileColumnName: "RB.pressure",
-    unit: EUnit.NONE,
+    unit: EUnit.PASCALS,
+    conversionMethod: PaToKPa,
   },
 ];
 
@@ -299,6 +305,13 @@ function KelvinToCelcius(valueInKelvins: number): ConversionResult {
   return {
     conversionUnit: EUnit.CELCIUS,
     conversionValue: valueInKelvins - 273.15,
+  };
+}
+
+function PaToKPa(valueinPascals: number): ConversionResult {
+  return {
+    conversionUnit: EUnit.KILOPASCALS,
+    conversionValue: valueinPascals / 1000,
   };
 }
 

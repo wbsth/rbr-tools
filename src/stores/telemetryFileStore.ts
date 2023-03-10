@@ -142,7 +142,7 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
         return !isNaN(pd[0]) && !isNaN(pd[1]);
       });
 
-      const sortedData = filteredData.sort((x) => x[0]);
+      const sortedData = filteredData; //.sort((x) => x[0]);
 
       const tempName = filesSettings.value.get(file.id)?.name ?? "?";
       const tempColor = filesSettings.value.get(file.id)?.color ?? "#FFFFFF";
@@ -172,7 +172,7 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
       yAxis: {
         title: {
           text: `${settings.ySettings.label} [${
-            unitAfterConversion ?? settings.ySettings.unit
+            unitAfterConversion ? unitAfterConversion : settings.ySettings.unit
           }]`,
           style: {
             fontSize: "14px",

@@ -71,7 +71,6 @@ watch(selectedChartType, () => {
           </button>
         </div>
       </div>
-      <p>{{ store.chartMaterials.get(data.id)?.yUnit }}</p>
       <div class="grow flex justify-center items-center overflow-hidden">
         <p v-if="!store.chartMaterials.get(props.data.id)" class="italic">
           no data
