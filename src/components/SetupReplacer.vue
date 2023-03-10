@@ -2,13 +2,14 @@
 import { ref } from "vue";
 import { replaceSetup } from "@/tools/replacer";
 import { fileSave, type FileWithHandle } from "browser-fs-access";
+import type { FileOperationResult } from "@/tools/misc";
 
 const props = defineProps<{
   replayFile: FileWithHandle;
   setupFile: FileWithHandle;
 }>();
 
-const replaceResult = ref();
+const replaceResult = ref<FileOperationResult>();
 
 async function replace() {
   const res = await replaceSetup(props.replayFile, props.setupFile);
@@ -21,13 +22,16 @@ async function saveToDisk() {
       0,
       props.replayFile.name.lastIndexOf(".")
     ) || props.replayFile.name;
-  var blob = new Blob([replaceResult.value.data], { type: "example/binary" });
 
-  await fileSave(blob, {
-    fileName: fileName + "_copy",
-    extensions: [".rpl"],
-    description: "RBR Replay File",
-  });
+  if (replaceResult.value != undefined) {
+    var blob = new Blob([replaceResult.value.data], { type: "example/binary" });
+
+    await fileSave(blob, {
+      fileName: fileName + "_copy",
+      extensions: [".rpl"],
+      description: "RBR Replay File",
+    });
+  }
 }
 </script>
 
@@ -36,7 +40,7 @@ async function saveToDisk() {
   <div>
     <h1 class="font-bold text-lg">New replay file</h1>
 
-    <div v-if="replaceResult.failed == null">
+    <div v-if="replaceResult?.failed == null">
       <button
         class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600"
         @click="replace">
@@ -45,7 +49,7 @@ async function saveToDisk() {
     </div>
 
     <div v-else>
-      <div v-if="replaceResult.failed">
+      <div v-if="replaceResult?.failed">
         <p>Replacement failed - {{ replaceResult.message }}</p>
       </div>
 
