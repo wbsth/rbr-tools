@@ -75,7 +75,7 @@ export async function replaceSetup(
     };
   } catch (error) {
     console.log(error);
-    errorMessage = error;
+    errorMessage = error as string;
     return {
       data: new Uint8Array(0),
       message: errorMessage,
