@@ -11,7 +11,7 @@ export async function replaceSetup(
   replayFile: FileWithHandle,
   setupFile: FileWithHandle
 ): Promise<FileOperationResult> {
-  const errorMessage = "";
+  let errorMessage = "";
   try {
     const wasFailed = false;
 
@@ -75,6 +75,7 @@ export async function replaceSetup(
     };
   } catch (error) {
     console.log(error);
+    errorMessage = error;
     return {
       data: new Uint8Array(0),
       message: errorMessage,
