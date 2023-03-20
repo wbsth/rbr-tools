@@ -6,7 +6,10 @@ const props = defineProps<{
 }>();
 
 function getImageUrl() {
-  return `../src/img/${props.tileData.tileImagePath}`;
+  return new URL(
+    `../assets/img/${props.tileData.tileImagePath}`,
+    import.meta.url
+  ).toString();
 }
 </script>
 
