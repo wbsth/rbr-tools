@@ -17,10 +17,10 @@ Highcharts.setOptions(myTheme as any);
 /* import the fontawesome core */
 import { library } from "@fortawesome/fontawesome-svg-core";
 /* import specific icons */
-import { faEye, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faXmark, faBars } from "@fortawesome/free-solid-svg-icons";
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-library.add(faXmark, faEye);
+library.add(faXmark, faEye, faBars);
 
 const pinia = createPinia();
 const app = createApp(App);
