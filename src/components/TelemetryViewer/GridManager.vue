@@ -51,7 +51,6 @@ function makeWidgets(widgets: GridStackWidget[]) {
 
 function makeWidget(item: GridStackWidget) {
   const elementSelector = `#${item.id}`;
-  console.log(item);
   return grid.makeWidget(elementSelector);
 }
 
