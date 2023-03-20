@@ -14,6 +14,11 @@ inject();
     <router-link
       to="/"
       class="ml-2 py-2 px-3 hover:bg-neutral-700 inline-block">
+      Home
+    </router-link>
+    <router-link
+      to="/extractor"
+      class="ml-2 py-2 px-3 hover:bg-neutral-700 inline-block">
       Setup extractor
     </router-link>
 
@@ -37,6 +42,7 @@ inject();
       <component :is="Component" />
     </Transition>
   </RouterView>
+  <p class="text-center text-xs mt-1 font-mono">Michal Ungeheuer 2023</p>
 </template>
 
 <style>

@@ -34,6 +34,9 @@ async function loadReplayFile() {
       All files are processed on the client side - no files are being sent to
       the server.
     </p>
+    <p class="text-sm italic font-bold">
+      Warning: use only setups saved used ingame editor.
+    </p>
 
     <div class="flex flex-row content-center gap-3 py-3">
       <button
