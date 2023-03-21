@@ -265,6 +265,14 @@ export function GetAvailableCharts(): IAvailableChart[] {
 
   carSuspensionPoints.forEach((obj) => {
     tempAvailableCharts.push({
+      label: `${obj} Helper Spring Active`,
+      fileColumnName: `${obj}.helperSpringActive` as keyof ITelemetryRawData,
+      unit: EUnit.NONE,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
       label: `${obj} Brake Disk Temperature`,
       fileColumnName: `${obj}.brakeDiskTemp` as keyof ITelemetryRawData,
       unit: EUnit.CELCIUS,
