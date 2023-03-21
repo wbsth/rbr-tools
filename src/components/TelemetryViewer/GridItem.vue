@@ -2,7 +2,7 @@
 import { ref, watch } from "vue";
 import ScatterChart from "./ScatterChart.vue";
 
-import { availableCharts } from "../../data/chartTypes";
+import { GetAvailableCharts } from "../../data/chartTypes";
 import type { IAvailableChart } from "../../data/chartTypes";
 
 import { telemetryFileStore } from "../../stores/telemetryFileStore";
@@ -30,6 +30,8 @@ function deleteThisWidget() {
 }
 
 const selectedChartType = ref<IAvailableChart>();
+
+const availableCharts = GetAvailableCharts();
 
 watch(selectedChartType, () => {
   if (selectedChartType.value) {
@@ -87,7 +89,7 @@ watch(selectedChartType, () => {
                     <li
                       :class="[
                         active ? 'bg-stone-700 text-white' : 'text-gray-200',
-                        'relative cursor-default select-none py-2 pl-3 pr-9',
+                        'relative cursor-default select-none py-0.5 pl-3 pr-9',
                       ]">
                       <div class="flex items-center">
                         <span

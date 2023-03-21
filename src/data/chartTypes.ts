@@ -1,3 +1,5 @@
+const carSuspensionPoints: string[] = ["LF", "RF", "LB", "RB"];
+
 enum EUnit {
   KMH = "Km/h",
   RPM = "RPM",
@@ -8,6 +10,10 @@ enum EUnit {
   SECONDS = "s",
   PASCALS = "PA",
   KILOPASCALS = "KPa",
+  MILIMETERS = "mm",
+  METERSPERSECOND = "m/s",
+  NEWTONS = "N",
+  PERCENT = "%",
 }
 
 // INTERFACES
@@ -187,7 +193,107 @@ export interface ITelemetryRawData {
   "RB.wear[7]"?: string;
 }
 
-export const availableCharts: IAvailableChart[] = [
+export function GetAvailableCharts(): IAvailableChart[] {
+  const tempAvailableCharts: IAvailableChart[] = availableCharts;
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Tire Temperature`,
+      fileColumnName: `${obj}.temperature` as keyof ITelemetryRawData,
+      unit: EUnit.KELVIN,
+      conversionMethod: KelvinToCelcius,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Tire Pressure`,
+      fileColumnName: `${obj}.pressure` as keyof ITelemetryRawData,
+      unit: EUnit.PASCALS,
+      conversionMethod: PaToKPa,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Deflection`,
+      fileColumnName: `${obj}.deflection` as keyof ITelemetryRawData,
+      unit: EUnit.METERS,
+      conversionMethod: MetersToMilimeters,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Deflection Velocity`,
+      fileColumnName: `${obj}.deflectionVelocity` as keyof ITelemetryRawData,
+      unit: EUnit.METERSPERSECOND,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Rollbar Force`,
+      fileColumnName: `${obj}.rollbarForce` as keyof ITelemetryRawData,
+      unit: EUnit.NEWTONS,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Spring Force`,
+      fileColumnName: `${obj}.springForce` as keyof ITelemetryRawData,
+      unit: EUnit.NEWTONS,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Damping Force`,
+      fileColumnName: `${obj}.dampingForce` as keyof ITelemetryRawData,
+      unit: EUnit.NEWTONS,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Strut Force`,
+      fileColumnName: `${obj}.strutForce` as keyof ITelemetryRawData,
+      unit: EUnit.NEWTONS,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Brake Disk Temperature`,
+      fileColumnName: `${obj}.brakeDiskTemp` as keyof ITelemetryRawData,
+      unit: EUnit.CELCIUS,
+      conversionMethod: BrakeTempsToCelcius,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Brake Disk Layer Temperature`,
+      fileColumnName: `${obj}.brakeDiskLayerTemp` as keyof ITelemetryRawData,
+      unit: EUnit.CELCIUS,
+      conversionMethod: BrakeTempsToCelcius,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Brake Wear`,
+      fileColumnName: `${obj}.brakeWear` as keyof ITelemetryRawData,
+      unit: EUnit.PERCENT,
+      conversionMethod: BrakeWearToPercent,
+    });
+  });
+
+  return tempAvailableCharts;
+}
+
+const availableCharts: IAvailableChart[] = [
   {
     label: "Speed",
     fileColumnName: "speed",
@@ -219,6 +325,12 @@ export const availableCharts: IAvailableChart[] = [
     unit: EUnit.NONE,
   },
   {
+    label: "Gear",
+    fileColumnName: "gear",
+    unit: EUnit.NONE,
+    conversionMethod: NormalizeGear,
+  },
+  {
     label: "Brake pressure",
     fileColumnName: "footbrakePressure",
     unit: EUnit.NONE,
@@ -246,54 +358,6 @@ export const availableCharts: IAvailableChart[] = [
     unit: EUnit.KELVIN,
     conversionMethod: KelvinToCelcius,
   },
-  {
-    label: "LF Tire Temperature",
-    fileColumnName: "LF.temperature",
-    unit: EUnit.KELVIN,
-    conversionMethod: KelvinToCelcius,
-  },
-  {
-    label: "LF Tire Pressure",
-    fileColumnName: "LF.pressure",
-    unit: EUnit.PASCALS,
-    conversionMethod: PaToKPa,
-  },
-  {
-    label: "RF Tire Temperature",
-    fileColumnName: "RF.temperature",
-    unit: EUnit.KELVIN,
-    conversionMethod: KelvinToCelcius,
-  },
-  {
-    label: "RF Tire Pressure",
-    fileColumnName: "RF.pressure",
-    unit: EUnit.PASCALS,
-    conversionMethod: PaToKPa,
-  },
-  {
-    label: "LB Tire Temperature",
-    fileColumnName: "LB.temperature",
-    unit: EUnit.KELVIN,
-    conversionMethod: KelvinToCelcius,
-  },
-  {
-    label: "LB Tire Pressure",
-    fileColumnName: "LB.pressure",
-    unit: EUnit.PASCALS,
-    conversionMethod: PaToKPa,
-  },
-  {
-    label: "RB Tire Temperature",
-    fileColumnName: "RB.temperature",
-    unit: EUnit.KELVIN,
-    conversionMethod: KelvinToCelcius,
-  },
-  {
-    label: "RB Tire Pressure",
-    fileColumnName: "RB.pressure",
-    unit: EUnit.PASCALS,
-    conversionMethod: PaToKPa,
-  },
 ];
 
 interface ConversionResult {
@@ -312,6 +376,35 @@ function PaToKPa(valueinPascals: number): ConversionResult {
   return {
     conversionUnit: EUnit.KILOPASCALS,
     conversionValue: valueinPascals / 1000,
+  };
+}
+
+function NormalizeGear(gear: number): ConversionResult {
+  return {
+    conversionUnit: EUnit.NONE,
+    conversionValue: gear - 1,
+  };
+}
+
+function MetersToMilimeters(meters: number): ConversionResult {
+  return {
+    conversionUnit: EUnit.MILIMETERS,
+    conversionValue: meters * 1000,
+  };
+}
+
+function BrakeTempsToCelcius(temp: number): ConversionResult {
+  return {
+    conversionUnit: EUnit.CELCIUS,
+    conversionValue: temp / 1000000 - 273.15,
+  };
+}
+
+const toPct = 100 / 1500e6;
+function BrakeWearToPercent(wear: number): ConversionResult {
+  return {
+    conversionUnit: EUnit.PERCENT,
+    conversionValue: wear * toPct,
   };
 }
 

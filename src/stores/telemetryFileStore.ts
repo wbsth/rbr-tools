@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { computed, ref, watch } from "vue";
 import {
-  availableCharts,
   availableXAxisTypes,
   type IAvailableChart,
   type IAvailableAxisType,
@@ -128,11 +127,9 @@ export const telemetryFileStore = defineStore("telemetryFileStore", () => {
           parseFloat(rawData[xAxisKey] as string),
           parseFloat(rawData[yAxisKey] as string),
         ];
-
         if (settings.ySettings.conversionMethod != undefined) {
-          data = data.map(
-            (x) => settings.ySettings.conversionMethod?.(x).conversionValue ?? 0
-          );
+          data[1] =
+            settings.ySettings.conversionMethod?.(data[1]).conversionValue ?? 0;
         }
 
         return data;
