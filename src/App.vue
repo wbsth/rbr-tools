@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import {
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-} from "@headlessui/vue";
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { inject } from "@vercel/analytics";
 
 const navigation = [
@@ -22,43 +14,10 @@ inject();
 </script>
 
 <template>
-  <!-- <div>
-    <span class="text-red-600 font-bold text-2xl">RBR </span>
-    <span class="text-white font-bold text-2xl">TOOLS</span>
-  </div> -->
-
-  <!-- <div class="my-2 bg-neutral-800 rounded-md">
-    <router-link
-      to="/"
-      class="ml-2 py-2 px-3 hover:bg-neutral-700 inline-block">
-      Home
-    </router-link>
-    <router-link
-      to="/extractor"
-      class="ml-2 py-2 px-3 hover:bg-neutral-700 inline-block">
-      Setup extractor
-    </router-link>
-
-    <router-link
-      to="/replacer"
-      class="py-2 px-3 hover:bg-neutral-700 inline-block">
-      Setup replacer
-    </router-link>
-
-    <router-link
-      to="/telemetry"
-      class="py-2 px-3 hover:bg-neutral-700 inline-block">
-      Telemetry analyzer
-    </router-link>
-
-    <p class="py-2 px-3 inline-block">more soon...</p>
-  </div> -->
-
   <Disclosure v-slot="{ open }" as="nav" class="bg-neutral-800 rounded-md my-2">
     <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <div class="relative flex flex-row h-16 items-center justify-between">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden z-10">
-          <!-- Mobile menu button-->
           <DisclosureButton
             class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-stone-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
             <span class="sr-only">Open main menu</span>
@@ -134,7 +93,9 @@ inject();
       <component :is="Component" />
     </Transition>
   </RouterView>
-  <p class="text-center text-xs mt-1 font-mono">Michal Ungeheuer 2023</p>
+  <p class="text-center text-xs mt-1 font-mono">
+    Michal Ungeheuer 2023 | wb#1287
+  </p>
 </template>
 
 <style>
