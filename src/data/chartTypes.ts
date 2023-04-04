@@ -194,7 +194,7 @@ export interface ITelemetryRawData {
 }
 
 export function GetAvailableCharts(): IAvailableChart[] {
-  const tempAvailableCharts: IAvailableChart[] = availableCharts;
+  const tempAvailableCharts: IAvailableChart[] = availableCharts.slice();
 
   carSuspensionPoints.forEach((obj) => {
     tempAvailableCharts.push({
