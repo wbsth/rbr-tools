@@ -22,10 +22,11 @@ import {
   faXmark,
   faBars,
   faCheck,
+  faQuestion,
 } from "@fortawesome/free-solid-svg-icons";
 /* import font awesome icon component */
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-library.add(faXmark, faEye, faBars, faCheck);
+library.add(faXmark, faEye, faBars, faCheck, faQuestion);
 
 const pinia = createPinia();
 const app = createApp(App);
