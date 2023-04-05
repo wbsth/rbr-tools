@@ -198,8 +198,26 @@ export function GetAvailableCharts(): IAvailableChart[] {
 
   carSuspensionPoints.forEach((obj) => {
     tempAvailableCharts.push({
-      label: `${obj} Tire Temperature`,
+      label: `${obj} Tire Temperature (air)`,
       fileColumnName: `${obj}.temperature` as keyof ITelemetryRawData,
+      unit: EUnit.KELVIN,
+      conversionMethod: KelvinToCelcius,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Tire Temperature (thread)`,
+      fileColumnName: `${obj}.treadTemperature` as keyof ITelemetryRawData,
+      unit: EUnit.KELVIN,
+      conversionMethod: KelvinToCelcius,
+    });
+  });
+
+  carSuspensionPoints.forEach((obj) => {
+    tempAvailableCharts.push({
+      label: `${obj} Tire Temperature (tire)`,
+      fileColumnName: `${obj}.tyreTemperature` as keyof ITelemetryRawData,
       unit: EUnit.KELVIN,
       conversionMethod: KelvinToCelcius,
     });
