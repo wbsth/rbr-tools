@@ -216,7 +216,7 @@ export function GetAvailableCharts(): IAvailableChart[] {
 
   carSuspensionPoints.forEach((obj) => {
     tempAvailableCharts.push({
-      label: `${obj} Tire Temperature (tire)`,
+      label: `${obj} Tire Temperature (carcass)`,
       fileColumnName: `${obj}.tyreTemperature` as keyof ITelemetryRawData,
       unit: EUnit.KELVIN,
       conversionMethod: KelvinToCelcius,
