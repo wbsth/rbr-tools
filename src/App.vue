@@ -21,11 +21,8 @@ inject();
   <div
     class="mx-auto p-8"
     :class="{ 'md:max-w-6xl': !settingsStore.wideViewEnabled }">
-    <Disclosure
-      v-slot="{ open }"
-      as="nav"
-      class="bg-neutral-800 rounded-md my-2">
-      <div class="max-w-7xl px-2 sm:px-6 lg:px-8">
+    <Disclosure v-slot="{ open }" as="nav" class="bg-base-300 rounded-md my-2">
+      <div class="max-w-7xl px-2 sm:px-6 lg:px-8 py-2">
         <div class="relative flex flex-row h-16 items-center justify-between">
           <div
             class="absolute inset-y-0 left-0 flex items-center sm:hidden z-10">
@@ -54,25 +51,11 @@ inject();
             </div>
             <div class="hidden sm:ml-6 sm:block">
               <div class="flex space-x-4">
-                <!-- <a
-                v-for="item in navigation"
-                :key="item.name"
-                :href="item.href"
-                :class="[
-                  item.current
-                    ? 'bg-gray-900 text-white'
-                    : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                  'rounded-md px-3 py-2 text-sm font-medium',
-                ]"
-                :aria-current="item.current ? 'page' : undefined"
-                >{{ item.name }}</a
-              > -->
                 <router-link
                   v-for="item in navigation"
                   :key="item.name"
-                  :to="item.href"
-                  class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-stone-600 hover:text-white">
-                  {{ item.name }}
+                  :to="item.href">
+                  <button className="btn">{{ item.name }}</button>
                 </router-link>
               </div>
             </div>
@@ -104,9 +87,13 @@ inject();
         <component :is="Component" />
       </Transition>
     </RouterView>
-    <p class="text-center text-xs mt-1 font-mono">
-      Michal Ungeheuer 2023 | wb#1287
-    </p>
+    <footer
+      className="footer footer-center p-4 bg-base-300 text-base-content text-xs rounded-md my-2">
+      <aside>
+        <p>Michal Ungeheuer 2023 | wb#1287</p>
+      </aside>
+    </footer>
+    <!-- <p class="text-center text-xs mt-1 font-mono"></p> -->
   </div>
 </template>
 
@@ -123,8 +110,7 @@ inject();
   opacity: 0;
 }
 
-.router-link-active {
-  @apply text-gray-100;
-  @apply bg-stone-700;
+.router-link-active > button {
+  @apply btn-primary;
 }
 </style>
