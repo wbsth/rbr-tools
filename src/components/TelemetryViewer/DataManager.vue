@@ -47,11 +47,7 @@ async function LoadData() {
 </script>
 
 <template>
-  <button
-    class="bg-neutral-700 px-4 py-2 mb-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block"
-    @click="LoadData">
-    <p>Load data</p>
-  </button>
+  <button class="btn btn-neutral btn-sm" @click="LoadData">Load data</button>
 
   <div class="flex flex-col gap-1">
     <DataManagerRow

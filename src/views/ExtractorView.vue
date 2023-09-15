@@ -6,7 +6,7 @@ import SetupPreview from "../components/SetupPreview.vue";
 const fileData = ref<FileWithHandle>();
 
 async function LoadNewReplayFile(fileEvent: Event) {
-  console.log(fileEvent.data);
+  console.log(fileEvent);
 
   const file = await fileOpen({
     description: "RBR Replay File",
@@ -17,7 +17,7 @@ async function LoadNewReplayFile(fileEvent: Event) {
 </script>
 
 <template>
-  <div class="bg-base-300 rounded-md p-8">
+  <div class="rounded-md p-8">
     <div class="prose">
       <h1>Setup extractor</h1>
       <p>
@@ -31,19 +31,17 @@ async function LoadNewReplayFile(fileEvent: Event) {
     </div>
 
     <div class="flex flex-row content-center py-3 gap-3">
-      <input
+      <!-- <input
         type="file"
         className="file-input w-full max-w-xs"
-        @change="LoadNewReplayFile" />
-      <!-- <button
-        class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block"
-        @click="LoadNewReplayFile">
-        <p>Choose replay file</p>
-      </button> -->
+        @change="LoadNewReplayFile" /> -->
+      <button class="btn btn-neutral" @click="LoadNewReplayFile">
+        Choose replay file
+      </button>
 
-      <!-- <div class="flex justify-center items-center italic">
+      <div class="flex justify-center items-center italic">
         {{ fileData == null ? "no file chosen..." : fileData.name }}
-      </div> -->
+      </div>
     </div>
 
     <SetupPreview v-if="fileData != null" :file="fileData" />

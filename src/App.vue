@@ -6,7 +6,6 @@ import { appSettingsStore } from "./stores/appSettingsStore";
 import { inject } from "@vercel/analytics";
 
 const navigation = [
-  { name: "Home", href: "/" },
   { name: "Setup extractor", href: "/extractor" },
   { name: "Setup replacer", href: "/replacer" },
   { name: "Telemetry analyzer", href: "/telemetry" },
@@ -19,9 +18,64 @@ inject();
 
 <template>
   <div
-    class="mx-auto p-8"
+    class="mx-auto p-8 bg-base-300"
     :class="{ 'md:max-w-6xl': !settingsStore.wideViewEnabled }">
-    <Disclosure v-slot="{ open }" as="nav" class="bg-base-300 rounded-md my-2">
+    <div className="navbar bg-base-200 rounded-md mb-2">
+      <div className="navbar-start">
+        <div className="dropdown">
+          <label tabIndex="{0}" className="btn btn-ghost lg:hidden">
+            <font-awesome-icon
+              class="block h-4 w-4"
+              icon="fa-solid fa-bars"
+              aria-hidden="true" />
+          </label>
+          <ul
+            tabIndex="{0}"
+            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <li v-for="item in navigation" :key="item.name">
+              <router-link :key="item.name" :to="item.href">
+                <a>{{ item.name }}</a>
+              </router-link>
+            </li>
+          </ul>
+        </div>
+        <router-link :key="navigation[0].name" to="/">
+          <a className="btn btn-ghost">
+            <div>
+              <span class="text-red-600 font-bold text-2xl mr-1">RBR</span>
+              <span class="text-white font-bold text-2xl">TOOLS</span>
+            </div>
+          </a>
+        </router-link>
+      </div>
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">
+          <!-- <DisclosureButton
+            v-for="item in navigation"
+            :key="item.name"
+            class="block rounded-md px-3 py-2 text-base font-medium">
+            <button @click="close">
+              <router-link
+                :key="item.name"
+                :to="item.href"
+                class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-stone-600 hover:text-white">
+                {{ item.name }}
+              </router-link>
+            </button>
+          </DisclosureButton> -->
+          <li v-for="item in navigation" :key="item.name">
+            <router-link :key="item.name" :to="item.href">
+              <a>{{ item.name }}</a>
+            </router-link>
+          </li>
+        </ul>
+      </div>
+      <div className="navbar-end">
+        <!-- <a className="btn">Button</a> -->
+      </div>
+    </div>
+
+    <!-- <Disclosure v-slot="{ open }" as="nav" class="bg-base-300 rounded-md my-2">
       <div class="max-w-7xl px-2 sm:px-6 lg:px-8 py-2">
         <div class="relative flex flex-row h-16 items-center justify-between">
           <div
@@ -29,6 +83,7 @@ inject();
             <DisclosureButton
               class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-stone-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
               <span class="sr-only">Open main menu</span>
+
               <font-awesome-icon
                 v-if="!open"
                 class="block h-4 w-4"
@@ -80,9 +135,9 @@ inject();
           </DisclosureButton>
         </div>
       </DisclosurePanel>
-    </Disclosure>
+    </Disclosure> -->
 
-    <RouterView v-slot="{ Component }">
+    <RouterView v-slot="{ Component }" class="bg-base-200">
       <Transition mode="out-in">
         <component :is="Component" />
       </Transition>

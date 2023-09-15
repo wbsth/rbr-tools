@@ -12,16 +12,19 @@ import {
 } from "@headlessui/vue";
 import { TelemetryTips } from "@/data/descriptions";
 
-const helpOpen = ref(false);
+function helpClicked() {
+  const element = document.getElementById("helpModal");
+  if (element != null && element instanceof HTMLDialogElement) {
+    element.showModal();
+  }
+}
 </script>
 
 <template>
-  <div class="bg-neutral-800 rounded-md p-4">
-    <div class="flex flex-row items-center mb-2">
-      <h1 class="font-bold text-3xl my-auto">Telemetry analyzer</h1>
-      <div
-        class="bg-neutral-700 hover:bg-neutral-600 cursor-pointer rounded-md w-8 h-8 flex justify-center items-center ml-2"
-        @click="helpOpen = true">
+  <div class="rounded-md p-8">
+    <div class="flex flex-row items-center mb-2 prose">
+      <h1 class="my-auto">Telemetry analyzer</h1>
+      <div class="btn btn-neutral btn-sm btn-square ml-4" @click="helpClicked">
         <font-awesome-icon
           class="h-4 w-4 text-gray-400"
           icon="fa-solid fa-question"
@@ -31,13 +34,29 @@ const helpOpen = ref(false);
 
     <DataManager />
 
-    <hr class="my-2 border-slate-400" />
+    <div className="divider my-2" />
 
     <TelemetrySettingsBar />
 
     <GridManager />
 
-    <TransitionRoot as="template" :show="helpOpen">
+    <dialog id="helpModal" className="modal">
+      <div className="modal-box prose absolute">
+        <h3 className="font-bold">Help</h3>
+        <div v-for="tip in TelemetryTips" :key="tip.title" class="mt-2">
+          <p class="text-base text-left font-semibold">
+            {{ tip.title }}
+          </p>
+          <p class="text-sm">
+            {{ tip.description }}
+          </p>
+        </div>
+      </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
+    <!-- <TransitionRoot as="template" :show="helpOpen">
       <Dialog as="div" class="relative z-10" @close="helpOpen = false">
         <TransitionChild
           as="template"
@@ -100,6 +119,6 @@ const helpOpen = ref(false);
           </div>
         </div>
       </Dialog>
-    </TransitionRoot>
+    </TransitionRoot> -->
   </div>
 </template>

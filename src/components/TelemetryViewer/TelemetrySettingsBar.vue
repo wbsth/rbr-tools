@@ -43,14 +43,14 @@ onUnmounted(() => {
         <p class="ml-4">Y axis:</p>
 
         <button
-          class="bg-neutral-700 rounded-md cursor-pointer hover:bg-neutral-600 py-0.5 px-1"
+          class="btn btn-neutral btn-sm"
           :class="{ 'opacity-40': !distanceActive }"
           @click="distanceClicked">
           distance
         </button>
 
         <button
-          class="bg-neutral-700 rounded-md cursor-pointer hover:bg-neutral-600 py-0.5 px-1"
+          class="btn btn-neutral btn-sm"
           :class="{ 'opacity-40': distanceActive }"
           @click="timeClicked">
           time
@@ -61,14 +61,14 @@ onUnmounted(() => {
         <p class="ml-4">Layout:</p>
 
         <button
-          class="bg-neutral-700 rounded-md cursor-pointer hover:bg-neutral-600 py-0.5 px-1"
+          class="btn btn-neutral btn-sm"
           :class="{ 'opacity-40': settingsStore.wideViewEnabled }"
           @click="switchLayout(false)">
           narrow
         </button>
 
         <button
-          class="bg-neutral-700 rounded-md cursor-pointer hover:bg-neutral-600 py-0.5 px-1"
+          class="btn btn-neutral btn-sm"
           :class="{ 'opacity-40': !settingsStore.wideViewEnabled }"
           @click="switchLayout(true)">
           wide

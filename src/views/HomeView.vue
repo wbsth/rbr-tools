@@ -4,7 +4,7 @@ import { homeTiles } from "@/data/homeTiles";
 </script>
 
 <template>
-  <div class="bg-base-300 rounded-md px-8 pb-8 py-4">
+  <div class="rounded-md px-8 pb-8 py-4">
     <div class="prose max-w-none mb-4">
       <h2 class="mb-2">About</h2>
 
