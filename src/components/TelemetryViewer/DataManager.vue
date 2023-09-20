@@ -49,7 +49,7 @@ async function LoadData() {
 <template>
   <button class="btn btn-neutral btn-sm" @click="LoadData">Load data</button>
 
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col gap-2 mt-2">
     <DataManagerRow
       v-for="file in fileStore.files"
       :key="file[0]"

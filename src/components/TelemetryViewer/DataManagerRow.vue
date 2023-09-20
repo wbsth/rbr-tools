@@ -44,7 +44,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="flex flex-row justify-between items-center bg-neutral-900 py-1 px-3 rounded-md text-sm">
+    class="flex flex-row justify-between items-center bg-base-100 py-1 px-3 rounded-md text-sm shadow-sm">
     <div class="flex flex-row items-center gap-x-2">
       <font-awesome-icon
         icon="fa-solid fa-eye"

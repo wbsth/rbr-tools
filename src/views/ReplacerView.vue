@@ -26,15 +26,6 @@ async function loadReplayFile() {
 <template>
   <div class="rounded-md p-8">
     <div class="prose">
-      <!-- <h1>Setup extractor</h1>
-      <p>
-        This simple tool allows you to extract setup file from Richard Burns
-        Rally replay file (.rpl).
-      </p>
-      <p>
-        All files are processed on the client side - no files are being sent to
-        the server.
-      </p> -->
       <h1>Setup replacer</h1>
       <p>
         This tool allows you to hide car setup in your replay file - by

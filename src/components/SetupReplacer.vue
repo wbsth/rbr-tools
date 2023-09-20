@@ -36,16 +36,14 @@ async function saveToDisk() {
 </script>
 
 <template>
-  <hr class="border-neutral-600" />
+  <div className="divider my-2" />
   <div>
-    <h1 class="font-bold text-lg">New replay file</h1>
+    <div class="prose">
+      <h3>New replay file</h3>
+    </div>
 
     <div v-if="replaceResult?.failed == null">
-      <button
-        class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600"
-        @click="replace">
-        Replace
-      </button>
+      <button class="btn btn-neutral" @click="replace">Replace</button>
     </div>
 
     <div v-else>
@@ -54,12 +52,10 @@ async function saveToDisk() {
       </div>
 
       <div v-else class="flex flex-row items-center gap-2">
-        <p>Replacement success!</p>
-        <button
-          class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600"
-          @click="saveToDisk">
-          Save
-        </button>
+        <div class="prose">
+          <p class="prose">Replacement success!</p>
+        </div>
+        <button class="btn btn-neutral" @click="saveToDisk">Save</button>
       </div>
     </div>
   </div>

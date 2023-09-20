@@ -1,7 +1,7 @@
 export default {
   colors: ["#F92672", "#66D9EF", "#A6E22E", "#A6E22E"],
   chart: {
-    backgroundColor: "#2a2a2b",
+    backgroundColor: "#2a323c",
     style: {
       fontFamily: "Inconsolata",
       color: "#A2A39C",

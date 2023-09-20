@@ -31,10 +31,6 @@ async function LoadNewReplayFile(fileEvent: Event) {
     </div>
 
     <div class="flex flex-row content-center py-3 gap-3">
-      <!-- <input
-        type="file"
-        className="file-input w-full max-w-xs"
-        @change="LoadNewReplayFile" /> -->
       <button class="btn btn-neutral" @click="LoadNewReplayFile">
         Choose replay file
       </button>
