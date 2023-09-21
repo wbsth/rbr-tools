@@ -52,14 +52,13 @@ watch(selectedChartType, () => {
     :gs-y="data.y"
     :gs-w="data.w"
     :gs-h="data.h">
-    <div class="bg-neutral-700 grid-stack-item-content flex flex-col">
-      <div
-        class="grid grid-cols-2 bg-neutral-900 px-2 py-1 no-drag drag-target">
+    <div class="bg-base-100 grid-stack-item-content flex flex-col shadow-md">
+      <div class="grid grid-cols-2 bg-base-300 px-2 py-1 no-drag drag-target">
         <div>
           <Listbox v-model="selectedChartType" as="div">
             <div>
               <ListboxButton
-                class="h-8 border text-sm rounded-sm block w-64 p-1 bg-neutral-800 border-gray-900 placeholder-gray-400 text-white focus:border-neutral-600 focus:ring-neutral-600 sm:text-sm sm:leading-6">
+                class="h-8 border text-sm rounded-sm block w-64 p-1 bg-base-100 border-gray-900 placeholder-gray-400 text-white focus:border-neutral-600 focus:ring-neutral-600 sm:text-sm sm:leading-6">
                 <span class="flex items-center">
                   <span class="ml-3 block truncate">{{
                     selectedChartType?.label
@@ -79,7 +78,7 @@ watch(selectedChartType, () => {
                 leave-from-class="opacity-100"
                 leave-to-class="opacity-0">
                 <ListboxOptions
-                  class="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-md bg-neutral-800 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                  class="absolute z-10 mt-1 max-h-72 w-full overflow-auto rounded-md bg-base-300 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                   <ListboxOption
                     v-for="chart in availableCharts"
                     :key="chart.label"
@@ -88,7 +87,7 @@ watch(selectedChartType, () => {
                     :value="chart">
                     <li
                       :class="[
-                        active ? 'bg-stone-700 text-white' : 'text-gray-200',
+                        active ? 'bg-base-100 text-white' : 'text-gray-200',
                         'relative cursor-default select-none py-0.5 pl-3 pr-9',
                       ]">
                       <div class="flex items-center">

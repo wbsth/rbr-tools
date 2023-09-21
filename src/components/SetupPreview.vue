@@ -52,19 +52,18 @@ watch(
 </script>
 
 <template>
-  <hr class="border-neutral-600" />
+  <div className="divider my-2" />
   <div>
-    <h1 class="font-bold text-lg">Setup file</h1>
-    <p class="mb-2">
-      {{ extractResult?.message == null ? "" : extractResult.message }}
-    </p>
+    <div class="prose mb-2">
+      <h3 class="mb-0">Setup file</h3>
+      <p>
+        {{ extractResult?.message == null ? "" : extractResult.message }}
+      </p>
+    </div>
+
     <div v-if="canShowDownloadButton">
-      <button
-        class="bg-neutral-700 px-4 py-2 rounded-md cursor-pointer hover:bg-neutral-600"
-        @click="saveToDisk">
-        Save to disk
-      </button>
-      <p class="bg-neutral-900 p-3 rounded-md whitespace-pre-wrap mt-3">
+      <button class="btn btn-neutral" @click="saveToDisk">Save to disk</button>
+      <p class="bg-base-100 shadow-md p-3 rounded-md whitespace-pre-wrap mt-3">
         {{ decoder.decode(extractResult?.data ?? emptyArray) }}
       </p>
     </div>

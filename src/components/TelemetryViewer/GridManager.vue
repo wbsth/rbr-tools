@@ -99,9 +99,5 @@ onMounted(() => {
       @delete="deleteWidget" />
   </div>
 
-  <button
-    class="bg-neutral-700 px-4 py-2 mb-2 rounded-md cursor-pointer hover:bg-neutral-600 inline-block"
-    @click="addWidget">
-    <p>Add graph</p>
-  </button>
+  <button class="btn btn-neutral btn-sm" @click="addWidget">Add graph</button>
 </template>
