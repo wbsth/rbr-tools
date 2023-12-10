@@ -3,6 +3,7 @@
 import {type FileWithHandle} from "browser-fs-access";
 import {ref} from "vue";
 import { TyrePressure } from "@/types/setup/TyrePressure";
+import { BrakePressure} from "@/types/setup/BrakePressure";
 
 const props = defineProps<{
   setupFile: FileWithHandle;
@@ -11,10 +12,12 @@ const props = defineProps<{
 
 const setupFileContent = ref<string>();
 const tyrePressure = ref<TyrePressure>();
+const brakePressure = ref<BrakePressure>();
 
 async function compare() {
   setupFileContent.value = await props.setupFile.text();
   tyrePressure.value = extractTyrePressures(setupFileContent.value);
+  brakePressure.value = extractBrakePressure(setupFileContent.value);
 }
 
 // move to separate file
@@ -55,6 +58,18 @@ function extractTyrePressures(text: string) {
   return tyrePressures;
 }
 
+function extractBrakePressure(text: string): BrakePressure | null {
+  const regex = /MaxBrakePressureFront (\d+\.\d+)\s+MaxBrakePressureRear (\d+\.\d+)/;
+  const match = text.match(regex);
+
+  if (match) {
+    const maxPressureFront = parseFloat(match[1]);
+    const maxPressureRear = parseFloat(match[2]);
+    return new BrakePressure(maxPressureFront, maxPressureRear);
+  }
+
+}
+
 </script>
 
 <template>
@@ -70,6 +85,12 @@ function extractTyrePressures(text: string) {
       <p>Front Right: {{TyrePressure.pressureInKpa(tyrePressure.frontRight).toString()}}</p>
       <p>Rear Left: {{TyrePressure.pressureInKpa(tyrePressure.rearLeft).toString()}}</p>
       <p>Rear Right: {{TyrePressure.pressureInKpa(tyrePressure.rearRight).toString()}}</p>
+    </div>
+
+    <div v-if="brakePressure != null">
+      <p>Brake pressure</p>
+      <p>Front: {{brakePressure.maxPressureFront.toString()}}</p>
+      <p>Rear: {{brakePressure.maxPressureRear.toString()}}</p>
     </div>
 
   </div>
