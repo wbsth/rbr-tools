@@ -28,11 +28,11 @@ const router = createRouter({
       name: "telemetry",
       component: TelemetryView,
     },
-    // {
-    //   path: "/setup-analyzer",
-    //     name: "setup-analyzer",
-    //     component: SetupAnalyzerView,
-    // }
+    {
+      path: "/setup-analyzer",
+        name: "setup-analyzer",
+        component: SetupAnalyzerView,
+    }
   ],
 });
 
