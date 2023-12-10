@@ -27,4 +27,11 @@ export const homeTiles: ITile[] = [
     tileImagePath: "replacer.png",
     tileUrlPath: "/replacer",
   },
+  {
+    tileTitle: "Setup Analyzer",
+    tileDescription:
+      "Setup analyser allows you to compare two setups. It will show you differences in setup values in easy to read way",
+    tileImagePath: "setup-analyzer.png",
+    tileUrlPath: "/setup-analyzer",
+  }
 ];

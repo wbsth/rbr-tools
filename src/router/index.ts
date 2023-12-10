@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import ExtractorView from "../views/ExtractorView.vue";
 import ReplacerView from "../views/ReplacerView.vue";
 import TelemetryView from "../views/TelemetryView.vue";
+import SetupAnalyzerView from "../views/SetupAnalyzerView.vue";
 import HomeView from "../views/HomeView.vue";
 
 const router = createRouter({
@@ -27,6 +28,11 @@ const router = createRouter({
       name: "telemetry",
       component: TelemetryView,
     },
+    // {
+    //   path: "/setup-analyzer",
+    //     name: "setup-analyzer",
+    //     component: SetupAnalyzerView,
+    // }
   ],
 });
 
